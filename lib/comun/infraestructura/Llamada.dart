@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
 
-import '../config/config.dart';
+import 'config.dart';
 
 
 
@@ -116,23 +116,41 @@ class _CallPageState extends State<CallPage> {
 
   Widget _viewRows() {
     final List<StatefulWidget> list = [];
+    StatefulWidget? broadcaster =  null;
     if(widget.role == ClientRole.Broadcaster) {
-      list.add(const rtc_local_view.SurfaceView());
+      broadcaster = const rtc_local_view.SurfaceView();
     }
     for (var uid in _users){
       list.add(rtc_remote_view.SurfaceView(
         uid: uid,
         channelId:  widget.channelName!,
       ));
+
     }
     final views = list;
-    return Column(
-      children: List.generate(
-          views.length,
-              (index) => Expanded(
-            child: views[index],
-          )
-      ),
+    return Stack(
+      children: [
+        Column(
+          children: List.generate(
+              views.length,
+                  (index) => Expanded(
+                child: views[index],
+              )
+          ),
+        ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Container(
+            width: 130,
+            height: 170,
+            padding: const EdgeInsets.only(top: 10, left: 10),
+            child: Center(
+                child: broadcaster
+            ),
+          ),
+        ),
+
+      ],
     );
   }
 

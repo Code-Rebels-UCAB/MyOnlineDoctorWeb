@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myonlinedoctorweb/page/Index.dart';
+import 'package:myonlinedoctorweb/comun/infraestructura/Index.dart';
 
 
 void main() {
