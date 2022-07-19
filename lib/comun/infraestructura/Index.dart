@@ -1,6 +1,7 @@
+import 'dart:html';
+
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import 'Llamada.dart';
 
@@ -39,16 +40,6 @@ class _IndexPageState extends State<IndexPage> {
               const SizedBox(height: 40,),
               Image.network('https://tinyurl.com/2p889y4k'),
               const SizedBox(height: 20,),
-              TextField(
-                controller: _channelController,
-                decoration: InputDecoration(
-                  errorText: _validateError ? 'Channel name is mandatory': null,
-                  border: const UnderlineInputBorder(
-                      borderSide: BorderSide(width: 1)
-                  ),
-                  hintText: 'Insert channel name',
-                ),
-              ),
               ElevatedButton(
                 onPressed: onJoin,
                 child: const Text('Join'),
@@ -68,6 +59,7 @@ class _IndexPageState extends State<IndexPage> {
       _channelController.text.isEmpty ? _validateError = true : _validateError = false;
     });
     if(_channelController.text.isNotEmpty){
+      await window.navigator.getUserMedia(audio: true, video: true);
       await Navigator.push(
           context,
           MaterialPageRoute(
