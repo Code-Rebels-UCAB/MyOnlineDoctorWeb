@@ -1,16 +1,17 @@
 
 import 'package:http/http.dart' as http;
+import 'package:myonlinedoctorweb/cita/infraestructura/cita_request_abstract.dart';
 import 'dart:convert';
 
 import 'package:myonlinedoctorweb/comun/infraestructura/videollamada_cita.dart';
 
-class IniciarLlamadaRequest {
+class IniciarLlamadaRequest implements CitaRequestAbstract {
 
   String url = 'http://10.0.2.2:3000';
 
   Future<VideollamadaCita> obtenerDataVideollamada(String citaid) async {
     try {
-      final apiUrl = Uri.parse(url + "api/cita/citaIniciada/" + citaid);
+      final apiUrl = Uri.parse(url + "/api/cita/citaIniciada/" + citaid);
       final response = await http.get(apiUrl).timeout(const Duration(seconds: 15));
       final datosAExtraer = jsonDecode(response.body)['valor'];
       final iniciarLlamada = datosAExtraer.map<VideollamadaCita>((e) => VideollamadaCita.fromJson(e)).toList();

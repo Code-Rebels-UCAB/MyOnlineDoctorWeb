@@ -2,16 +2,18 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
+import 'package:myonlinedoctorweb/comun/infraestructura/videollamada_cita.dart';
+import 'package:provider/provider.dart';
 
+import '../../cita/providers/cita_estado.dart';
 import 'config.dart';
 
 
 
 
 class CallPage extends StatefulWidget {
-  final String? channelName;
-  final ClientRole? role;
-  const CallPage({Key? key, this.channelName, this.role}) : super(key: key);
+  final ClientRole? role = ClientRole.Broadcaster;
+  const CallPage({Key? key}) : super(key: key);
 
   @override
   State<CallPage> createState() => _CallPageState();
@@ -23,6 +25,7 @@ class _CallPageState extends State<CallPage> {
   bool muted = false;
   bool viewPanel = false;
   late RtcEngine _engine;
+  VideollamadaCita? videollamadaCita;
 
   @override
   void initState() {
@@ -41,6 +44,7 @@ class _CallPageState extends State<CallPage> {
   }
 
   Future<void> initialize() async {
+    videollamadaCita = Provider.of<CitaEstado>(context).cita;
     if(appId.isEmpty){
       setState(() {
         _infoStrings.add(
@@ -60,7 +64,7 @@ class _CallPageState extends State<CallPage> {
     VideoEncoderConfiguration configuration = VideoEncoderConfiguration();
     configuration.dimensions = VideoDimensions(width: 1920, height: 1080);
     await _engine.setVideoEncoderConfiguration(configuration);
-    await _engine.joinChannel(token, widget.channelName!, null, 0);
+    await _engine.joinChannel(videollamadaCita!.tokenTemp, videollamadaCita!.nombreCanal, null, 0);
 
   }
 
@@ -123,7 +127,7 @@ class _CallPageState extends State<CallPage> {
     for (var uid in _users){
       list.add(rtc_remote_view.SurfaceView(
         uid: uid,
-        channelId:  widget.channelName!,
+        channelId:  videollamadaCita!.nombreCanal,
       ));
 
     }

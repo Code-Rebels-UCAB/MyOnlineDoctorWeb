@@ -2,8 +2,11 @@ import 'dart:html';
 
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
+import 'package:myonlinedoctorweb/cita/providers/cita_estado.dart';
+import 'package:provider/provider.dart';
 
 import 'Llamada.dart';
+import 'error_dialogo.dart';
 
 
 class IndexPage extends StatefulWidget {
@@ -14,14 +17,12 @@ class IndexPage extends StatefulWidget {
 }
 
 class _IndexPageState extends State<IndexPage> {
-  final _channelController = TextEditingController();
-  bool _validateError = false;
+  bool _estaCargando = false;
   final ClientRole? _role = ClientRole.Broadcaster;
 
   @override
   void dispose() {
     // TODO: implement dispose
-    _channelController.dispose();
     super.dispose();
   }
 
@@ -40,7 +41,7 @@ class _IndexPageState extends State<IndexPage> {
               const SizedBox(height: 40,),
               Image.network('https://tinyurl.com/2p889y4k'),
               const SizedBox(height: 20,),
-              ElevatedButton(
+              _estaCargando ? const CircularProgressIndicator() : ElevatedButton(
                 onPressed: onJoin,
                 child: const Text('Join'),
                 style: ElevatedButton.styleFrom(
@@ -56,20 +57,26 @@ class _IndexPageState extends State<IndexPage> {
 
   Future<void> onJoin() async {
     setState(() {
-      _channelController.text.isEmpty ? _validateError = true : _validateError = false;
+      _estaCargando = true;
     });
-    if(_channelController.text.isNotEmpty){
       await window.navigator.getUserMedia(audio: true, video: true);
-      await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CallPage(
-              channelName: _channelController.text,
-              role: _role,
-            ),
-          )
-      );
-    }
+      try {
+        await Provider.of<CitaEstado>(context, listen: false).obtenerCitasDesdApi("1");
+        await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CallPage(),
+            )
+        );
+      }catch(e){
+        ErrorDialog.showErrorDialog(e.toString(), context);
+      }finally{
+        setState(() {
+          _estaCargando = false;
+        });
+      }
+
+
   }
 
 }
