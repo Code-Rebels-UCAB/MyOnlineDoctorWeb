@@ -1,14 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:myonlinedoctorweb/api/citasApi.dart';
 
 import '../../models/Cita.dart';
 import '../NavBar.dart';
 import '../../JsonDataExample/data.dart';
 
-class citasLista extends StatelessWidget {
-  late List<Cita> citas = dataSimulator.getCitas();
+class citasLista extends StatefulWidget {
   late int citapage;
 
   citasLista({Key? key, required this.citapage}) : super(key: key);
+
+  @override
+  State<citasLista> createState() => _citasListaState();
+}
+
+class _citasListaState extends State<citasLista> {
+  late List<Cita> citas = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    init();
+  }
+
+  Future init() async {
+    final _citas = await ServiceCitaApi.getCitas();
+
+    setState(() {
+      if (citas != null) {
+        citas = _citas!;
+      } else {
+        citas = [];
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +56,7 @@ class citasLista extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        citapage == 0
+        widget.citapage == 0
             ? SizedBox(
                 height: 100,
                 child: Align(
@@ -40,7 +67,7 @@ class citasLista extends StatelessWidget {
                 ),
               )
             : const SizedBox(
-                height: 100, 
+                height: 100,
                 child: Align(
                   alignment: Alignment.center,
                   child:
@@ -63,7 +90,7 @@ class citasLista extends StatelessWidget {
                     child: Title(
                         color: Colors.black,
                         child: Text(
-                          cita.Paciente,
+                          cita.paciente.pNombre + ' ' + cita.paciente.pApellido,
                           style: const TextStyle(fontSize: 16),
                         )),
                   ),
@@ -72,7 +99,7 @@ class citasLista extends StatelessWidget {
                     child: Title(
                         color: Colors.black,
                         child: Text(
-                          cita.Hour,
+                          cita.horacita,
                           style: const TextStyle(fontSize: 16),
                         )),
                   ),
@@ -81,7 +108,7 @@ class citasLista extends StatelessWidget {
                     child: Title(
                         color: Colors.black,
                         child: Text(
-                          cita.Modalidad,
+                          cita.modalidad,
                           style: const TextStyle(fontSize: 16),
                         )),
                   ),
@@ -90,13 +117,15 @@ class citasLista extends StatelessWidget {
                     child: Title(
                         color: Colors.black,
                         child: Text(
-                          cita.Status,
+                          cita.statuscita,
                           style: const TextStyle(fontSize: 16),
                         )),
                   ),
-                  if (citas[index].Status == "Aceptada" && citapage == 0)
+                  if (citas[index].statuscita == "Aceptada" &&
+                      widget.citapage == 0)
                     _mostrarBotones0(),
-                  if (citas[index].Status == "Aceptada" && citapage == 1)
+                  if (citas[index].statuscita == "Aceptada" &&
+                      widget.citapage == 1)
                     _mostrarBotones1()
                 ],
               ),
