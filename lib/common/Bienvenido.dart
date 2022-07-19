@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myonlinedoctorweb/widgets/NavBar.dart';
+import 'package:myonlinedoctorweb/common/NavBar.dart';
+
 
 class Bienvenido extends StatelessWidget {
   const Bienvenido({Key? key}) : super(key: key);

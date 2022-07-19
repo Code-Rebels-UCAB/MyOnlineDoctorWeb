@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:myonlinedoctorweb/api/citasApi.dart';
+import 'package:myonlinedoctorweb/common/NavBar.dart';
 
-import '../../models/Cita.dart';
-import '../NavBar.dart';
-import '../../JsonDataExample/data.dart';
 
-class citasLista extends StatefulWidget {
-  late int citapage;
+import '../../cita/infraestructura/Cita.dart';
 
-  citasLista({Key? key, required this.citapage}) : super(key: key);
+
+class citasDiaLista extends StatefulWidget {
+  citasDiaLista({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<citasLista> createState() => _citasListaState();
+  State<citasDiaLista> createState() => _citasDiaListaState();
 }
 
-class _citasListaState extends State<citasLista> {
+class _citasDiaListaState extends State<citasDiaLista> {
   late List<Cita> citas = [];
 
   @override
@@ -26,7 +27,7 @@ class _citasListaState extends State<citasLista> {
   }
 
   Future init() async {
-    final _citas = await ServiceCitaApi.getCitas();
+    final _citas = await ServiceCitaApi.getCitasDia();
 
     setState(() {
       if (citas != null) {
@@ -56,24 +57,15 @@ class _citasListaState extends State<citasLista> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        widget.citapage == 0
-            ? SizedBox(
-                height: 100,
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                      "Citas del dia de Hoy: ${DateTime.now().year} / ${DateTime.now().month} / ${DateTime.now().day}",
-                      style: const TextStyle(fontSize: 28)),
-                ),
-              )
-            : const SizedBox(
-                height: 100,
-                child: Align(
-                  alignment: Alignment.center,
-                  child:
-                      Text("Todas las citas", style: TextStyle(fontSize: 28)),
-                ),
-              ),
+        SizedBox(
+          height: 100,
+          child: Align(
+            alignment: Alignment.center,
+            child: Text(
+                "Citas del dia de Hoy: ${DateTime.now().year} / ${DateTime.now().month} / ${DateTime.now().day}",
+                style: const TextStyle(fontSize: 28)),
+          ),
+        ),
         Expanded(
             child: ListView.builder(
           itemCount: citas.length,
@@ -99,7 +91,7 @@ class _citasListaState extends State<citasLista> {
                     child: Title(
                         color: Colors.black,
                         child: Text(
-                          cita.horacita,
+                          cita.horacita ?? '-',
                           style: const TextStyle(fontSize: 16),
                         )),
                   ),
@@ -108,7 +100,7 @@ class _citasListaState extends State<citasLista> {
                     child: Title(
                         color: Colors.black,
                         child: Text(
-                          cita.modalidad,
+                          cita.modalidad ?? '-',
                           style: const TextStyle(fontSize: 16),
                         )),
                   ),
@@ -117,16 +109,11 @@ class _citasListaState extends State<citasLista> {
                     child: Title(
                         color: Colors.black,
                         child: Text(
-                          cita.statuscita,
+                          cita.statuscita ?? '-',
                           style: const TextStyle(fontSize: 16),
                         )),
                   ),
-                  if (citas[index].statuscita == "Aceptada" &&
-                      widget.citapage == 0)
-                    _mostrarBotones0(),
-                  if (citas[index].statuscita == "Aceptada" &&
-                      widget.citapage == 1)
-                    _mostrarBotones1()
+                  if (citas[index].statuscita == "Aceptada") _mostrarBotones(),
                 ],
               ),
             ));
@@ -136,7 +123,7 @@ class _citasListaState extends State<citasLista> {
     );
   }
 
-  Widget _mostrarBotones0() {
+  Widget _mostrarBotones() {
     return Row(
       children: [
         SizedBox(
@@ -166,25 +153,6 @@ class _citasListaState extends State<citasLista> {
               ),
               onPressed: () {}),
         )
-      ],
-    );
-  }
-
-  Widget _mostrarBotones1() {
-    return Row(
-      children: [
-        SizedBox(
-          height: 50.0,
-          child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Color.fromARGB(255, 255, 0, 0),
-              ),
-              child: const Text(
-                'Suspender',
-                style: TextStyle(fontSize: 22),
-              ),
-              onPressed: () {}),
-        ),
       ],
     );
   }

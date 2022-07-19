@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myonlinedoctorweb/widgets/pages/Bienvenido.dart';
-import 'package:myonlinedoctorweb/widgets/pages/citas_dashboard.dart';
+import 'package:myonlinedoctorweb/cita/screens/citas_dashboard.dart';
+import 'package:myonlinedoctorweb/common/Bienvenido.dart';
+
 
 class NavBar extends StatelessWidget {
   const NavBar({Key? key}) : super(key: key);
