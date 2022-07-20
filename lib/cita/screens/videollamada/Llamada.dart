@@ -5,7 +5,7 @@ import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
 
 import 'package:provider/provider.dart';
 
-import '../../infraestructura/videollamada/modelo/cita.dart';
+import '../../infraestructura/videollamada/modelo/cita_iniciada.dart';
 import '../../providers/cita_estado.dart';
 import '../../../comun/infraestructura/config.dart';
 
@@ -27,7 +27,7 @@ class _CallPageState extends State<CallPage> {
   bool viewPanel = false;
   bool _seUnio = true;
   late RtcEngine _engine;
-  Cita? videollamadaCita;
+  CitaIniciada? videollamadaCita;
 
   @override
   void initState() {
@@ -179,11 +179,11 @@ class _CallPageState extends State<CallPage> {
             },
             child: Icon(
               muted ? Icons.mic_off: Icons.mic,
-              color: muted? Colors.white : Colors.amberAccent,
+              color: muted? Colors.white : Colors.lightBlueAccent,
             ),
             shape: const CircleBorder(),
             elevation: 2.0,
-            fillColor: muted ? Colors.amberAccent: Colors.white,
+            fillColor: muted ? Colors.lightBlueAccent: Colors.white,
             padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
@@ -204,7 +204,7 @@ class _CallPageState extends State<CallPage> {
             },
             child: const Icon(
               Icons.switch_camera,
-              color: Colors.amberAccent,
+              color: Colors.lightBlueAccent,
               size: 20,
             ),
             shape: const CircleBorder(),
@@ -274,6 +274,7 @@ class _CallPageState extends State<CallPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('MyOnlineDoctor'),
+        backgroundColor: const Color(0xFF00B0E8),
         automaticallyImplyLeading: false,
         centerTitle: true,
         actions: [

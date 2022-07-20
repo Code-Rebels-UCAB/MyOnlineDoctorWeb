@@ -1,9 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:myonlinedoctorweb/api/citasApi.dart';
-import 'package:myonlinedoctorweb/cita/screens/campo_citas.dart';
-import 'package:myonlinedoctorweb/common/NavBar.dart';
+import 'dart:html';
 
-import '../../cita/infraestructura/Cita.dart';
+import 'package:flutter/material.dart';
+import 'package:myonlinedoctorweb/cita/infraestructura/servicios/citasApi.dart';
+import 'package:myonlinedoctorweb/cita/screens/campo_citas.dart';
+import 'package:myonlinedoctorweb/cita/screens/videollamada/Llamada.dart';
+import 'package:myonlinedoctorweb/common/NavBar.dart';
+import 'package:provider/provider.dart';
+
+import '../../comun/infraestructura/error_dialogo.dart';
+import '../infraestructura/modelo/Cita.dart';
+import '../providers/cita_estado.dart';
 
 class citasDiaLista extends StatefulWidget {
   citasDiaLista({
@@ -16,6 +22,7 @@ class citasDiaLista extends StatefulWidget {
 
 class _citasDiaListaState extends State<citasDiaLista> {
   late List<Cita> citas = [];
+  bool _estaCargando = false;
 
   @override
   void initState() {
@@ -83,7 +90,7 @@ class _citasDiaListaState extends State<citasDiaLista> {
                   CampoCita(dato: cita.horacita),
                   CampoCita(dato: cita.modalidad),
                   CampoCita(dato: cita.statuscita),
-                  if (citas[index].statuscita == "Aceptada") _mostrarBotones(),
+                  if (citas[index].statuscita == "Aceptada") _mostrarBotones(cita.idCita),
                 ],
               ),
             ));
@@ -93,7 +100,7 @@ class _citasDiaListaState extends State<citasDiaLista> {
     );
   }
 
-  Widget _mostrarBotones() {
+  Widget _mostrarBotones(String citaId) {
     return Row(
       children: [
         SizedBox(
@@ -106,7 +113,7 @@ class _citasDiaListaState extends State<citasDiaLista> {
                 'Llamar',
                 style: TextStyle(fontSize: 22),
               ),
-              onPressed: () {}),
+              onPressed: () {if (citaId!=null){onJoin(citaId);} }),
         ),
         const SizedBox(
           width: 50.0,
@@ -125,5 +132,30 @@ class _citasDiaListaState extends State<citasDiaLista> {
         )
       ],
     );
+  }
+
+  Future<void> onJoin(String citaid) async {
+    print(citaid);
+    setState(() {
+      _estaCargando = true;
+    });
+    await window.navigator.getUserMedia(audio: true, video: true);
+    try {
+      await Provider.of<CitaEstado>(context, listen: false).obtenerCitasDesdApi(citaid);
+      await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const CallPage(),
+          )
+      );
+    }catch(e){
+      ErrorDialog.showErrorDialog(e.toString(), context);
+    }finally{
+      setState(() {
+        _estaCargando = false;
+      });
+    }
+
+
   }
 }

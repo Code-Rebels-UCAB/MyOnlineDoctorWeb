@@ -28,7 +28,7 @@ class ResponseCitas {
 
 class Cita {
   Cita({
-    this.idCita,
+    required this.idCita,
     this.statuscita,
     this.modalidad,
     this.motivo,
@@ -38,7 +38,7 @@ class Cita {
     required this.paciente,
   });
 
-  String? idCita;
+  String idCita;
   String? statuscita;
   String? modalidad;
   String? motivo;

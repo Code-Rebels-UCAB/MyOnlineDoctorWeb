@@ -1,7 +1,7 @@
 
 import 'package:myonlinedoctorweb/cita/infraestructura/videollamada/modelo/videollamada.dart';
 
-class Cita {
+class CitaIniciada {
     final String idCita;
     final String idPaciente;
     final String idDoctor;
@@ -13,7 +13,7 @@ class Cita {
     final  duracion;
     final VideollamadaCita videollamada;
 
-    const Cita({
+    const CitaIniciada({
       required this.idCita,
       required this.idPaciente,
       required this.idDoctor,
@@ -27,8 +27,8 @@ class Cita {
 
   });
 
-    factory Cita.fromJson(Map<String, dynamic> json){
-      return Cita(
+    factory CitaIniciada.fromJson(Map<String, dynamic> json){
+      return CitaIniciada(
           idCita: json['idCita'],
           idPaciente: json['idPaciente'],
           idDoctor: json['idDoctor'],

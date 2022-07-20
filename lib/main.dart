@@ -34,7 +34,7 @@ class FirstPage extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.amber,
+        primarySwatch: Colors.lightBlue,
       ),
       initialRoute: 'home',
       routes: {
