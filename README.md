@@ -1,4 +1,6 @@
-![logo](./assets/MyOnlineDoctor.png "MyOnlineDoctor")
+<p align='center'>
+    <img src='./assets/MyOnlineDoctor.png'>
+</p>
 
 # MyOnlineDoctor Web
 
