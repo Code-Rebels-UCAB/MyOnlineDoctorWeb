@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myonlinedoctorweb/cita/screens/citas_dashboard.dart';
+import 'package:myonlinedoctorweb/cita/screens/lista_citas_solicitadas.dart';
 import 'package:myonlinedoctorweb/common/Bienvenido.dart';
-
 
 class NavBar extends StatelessWidget {
   const NavBar({Key? key}) : super(key: key);
@@ -81,7 +81,12 @@ class NavBar extends StatelessWidget {
                 const Icon(Icons.add_alert_rounded, color: Color(0xFF94C6F2)),
             title: const Text('Solicitudes',
                 style: TextStyle(color: Color(0xFF94C6F2))),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => citasSolicitadasLista()));
+            },
           ),
           const Divider(
             color: Color(0xFF94C6F2),
