@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:myonlinedoctorweb/api/citasApi.dart';
+import 'package:myonlinedoctorweb/cita/screens/campo_citas.dart';
 import 'package:myonlinedoctorweb/common/NavBar.dart';
 
-
 import '../../cita/infraestructura/Cita.dart';
-
 
 class citasDiaLista extends StatefulWidget {
   citasDiaLista({
@@ -77,42 +76,13 @@ class _citasDiaListaState extends State<citasDiaLista> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    width: 300.0,
-                    child: Title(
-                        color: Colors.black,
-                        child: Text(
-                          cita.paciente.pNombre + ' ' + cita.paciente.pApellido,
-                          style: const TextStyle(fontSize: 16),
-                        )),
-                  ),
-                  SizedBox(
-                    width: 300.0,
-                    child: Title(
-                        color: Colors.black,
-                        child: Text(
-                          cita.horacita ?? '-',
-                          style: const TextStyle(fontSize: 16),
-                        )),
-                  ),
-                  SizedBox(
-                    width: 300.0,
-                    child: Title(
-                        color: Colors.black,
-                        child: Text(
-                          cita.modalidad ?? '-',
-                          style: const TextStyle(fontSize: 16),
-                        )),
-                  ),
-                  SizedBox(
-                    width: 300.0,
-                    child: Title(
-                        color: Colors.black,
-                        child: Text(
-                          cita.statuscita ?? '-',
-                          style: const TextStyle(fontSize: 16),
-                        )),
-                  ),
+                  CampoCita(
+                      dato: cita.paciente.pNombre +
+                          ' ' +
+                          cita.paciente.pApellido),
+                  CampoCita(dato: cita.horacita),
+                  CampoCita(dato: cita.modalidad),
+                  CampoCita(dato: cita.statuscita),
                   if (citas[index].statuscita == "Aceptada") _mostrarBotones(),
                 ],
               ),
