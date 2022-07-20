@@ -6,15 +6,15 @@ import 'package:myonlinedoctorweb/common/NavBar.dart';
 import '../../cita/infraestructura/Cita.dart';
 
 class citasSolicitadasLista extends StatefulWidget {
-  citasSolicitadasLista({
-    Key? key,
-  }) : super(key: key);
-
   @override
   State<citasSolicitadasLista> createState() => _citasSolicitadasListaState();
 }
 
 class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
+  DateTime? date = DateTime.now();
+  TimeOfDay? time =
+      TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,81 +84,6 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
     ));
   }
 
-  _PopUp(BuildContext context, dynamic cita) {
-    TextEditingController customController = TextEditingController();
-
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Center(
-                child: Text('Paciente:  ' +
-                    cita.paciente.pNombre +
-                    ' ' +
-                    cita.paciente.pApellido)),
-            content: Container(
-              height: 150,
-              width: 500,
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Fecha: ',
-                      ),
-                      SizedBox(
-                        width: 300,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
-                          child: TextField(
-                            controller: customController,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Hora:  '),
-                      SizedBox(
-                        width: 300,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
-                          child: TextField(
-                            controller: customController,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 50),
-                child: Center(
-                  child: SizedBox(
-                    width: 150,
-                    child: MaterialButton(
-                      color: const Color(0xFF00B0E8),
-                      elevation: 5.0,
-                      child: const Text(
-                        'Submit',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        });
-  }
-
   Widget _mostrarBotones(dynamic cita) {
     return Row(
       children: [
@@ -173,7 +98,7 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
                 style: TextStyle(fontSize: 22),
               ),
               onPressed: () {
-                _PopUp(context, cita);
+                _PopUp(context, cita, date);
               }),
         ),
         const SizedBox(
@@ -193,5 +118,120 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
         )
       ],
     );
+  }
+
+  _PopUp(BuildContext context, dynamic cita, DateTime? date) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return AlertDialog(
+                title: Center(
+                    child: Text('Paciente:  ' +
+                        cita.paciente.pNombre +
+                        ' ' +
+                        cita.paciente.pApellido)),
+                content: Container(
+                  height: 150,
+                  width: 500,
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Fecha: ',
+                          ),
+                          SizedBox(
+                            width: 200,
+                            child: Padding(
+                                padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
+                                child: Text(
+                                    '${date != null ? date!.year : 'none'} / ${date != null ? date!.month : 'none'} / ${date != null ? date!.day : 'none'}')),
+                          ),
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: const Color(0xFF00B0E8),
+                              ),
+                              child: const Text(
+                                'Seleccionar Fecha',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              onPressed: () async {
+                                DateTime? newDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: date!,
+                                    firstDate: DateTime(2022),
+                                    lastDate: DateTime(2023));
+
+                                if (date == null) return;
+                                setState(() {
+                                  date = newDate;
+                                });
+                              }),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 60,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text('Hora:  '),
+                          SizedBox(
+                            width: 200,
+                            child: Padding(
+                                padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
+                                child: Text('${time!.hour}:${time!.minute}')),
+                          ),
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: const Color(0xFF00B0E8),
+                              ),
+                              child: const Text(
+                                'Seleccionar hora',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              onPressed: () async {
+                                TimeOfDay? newTime = await showTimePicker(
+                                    context: context, initialTime: time!);
+
+                                if (date == null) return;
+                                setState(() {
+                                  time = newTime;
+                                });
+                              }),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 50),
+                    child: Center(
+                      child: SizedBox(
+                        width: 150,
+                        child: MaterialButton(
+                          color: const Color(0xFF00B0E8),
+                          elevation: 5.0,
+                          child: const Text(
+                            'Submit',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onPressed: () {},
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        });
   }
 }
