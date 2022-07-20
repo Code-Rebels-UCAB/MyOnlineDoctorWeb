@@ -1,3 +1,5 @@
+![logo](./assets/MyOnlineDoctor.png "MyOnlineDoctor")
+
 # MyOnlineDoctor Web
 
 Desarrollo del Software.
