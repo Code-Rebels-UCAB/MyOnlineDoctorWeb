@@ -1,15 +1,17 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:myonlinedoctorweb/cita/infraestructura/cita_request_abstract.dart';
-import 'package:myonlinedoctorweb/comun/infraestructura/videollamada_cita.dart';
+
+import '../infraestructura/videollamada/modelo/cita.dart';
+
 
 class CitaEstado with ChangeNotifier {
 
-  VideollamadaCita? _cita;
+  Cita? _cita;
   CitaRequestAbstract request;
   CitaEstado({required this.request});
 
-  VideollamadaCita? get cita {
+  Cita? get cita {
     if(_cita != null){
       return _cita;
     }

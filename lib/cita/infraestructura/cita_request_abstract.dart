@@ -1,5 +1,5 @@
-import '../../comun/infraestructura/videollamada_cita.dart';
+import 'videollamada/modelo/cita.dart';
 
 abstract class CitaRequestAbstract {
-  Future<VideollamadaCita> obtenerDataVideollamada(String citaid);
+  Future<Cita> obtenerDataVideollamada(String citaid);
 }

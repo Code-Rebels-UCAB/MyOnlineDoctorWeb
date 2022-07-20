@@ -2,9 +2,10 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
-import 'package:myonlinedoctorweb/comun/infraestructura/videollamada_cita.dart';
+
 import 'package:provider/provider.dart';
 
+import '../../cita/infraestructura/videollamada/modelo/cita.dart';
 import '../../cita/providers/cita_estado.dart';
 import 'config.dart';
 
@@ -24,8 +25,9 @@ class _CallPageState extends State<CallPage> {
   final _infoStrings = <String>[];
   bool muted = false;
   bool viewPanel = false;
+  bool _seUnio = true;
   late RtcEngine _engine;
-  VideollamadaCita? videollamadaCita;
+  Cita? videollamadaCita;
 
   @override
   void initState() {
@@ -44,7 +46,7 @@ class _CallPageState extends State<CallPage> {
   }
 
   Future<void> initialize() async {
-    videollamadaCita = Provider.of<CitaEstado>(context).cita;
+    videollamadaCita = Provider.of<CitaEstado>(context, listen: false).cita;
     if(appId.isEmpty){
       setState(() {
         _infoStrings.add(
@@ -64,7 +66,7 @@ class _CallPageState extends State<CallPage> {
     VideoEncoderConfiguration configuration = VideoEncoderConfiguration();
     configuration.dimensions = VideoDimensions(width: 1920, height: 1080);
     await _engine.setVideoEncoderConfiguration(configuration);
-    await _engine.joinChannel(videollamadaCita!.tokenTemp, videollamadaCita!.nombreCanal, null, 0);
+    await _engine.joinChannel(videollamadaCita!.videollamada.tokenTemp, videollamadaCita!.videollamada.nombreCanal, null, 0);
 
   }
 
@@ -127,7 +129,7 @@ class _CallPageState extends State<CallPage> {
     for (var uid in _users){
       list.add(rtc_remote_view.SurfaceView(
         uid: uid,
-        channelId:  videollamadaCita!.nombreCanal,
+        channelId:  videollamadaCita!.videollamada.nombreCanal,
       ));
 
     }
@@ -145,9 +147,9 @@ class _CallPageState extends State<CallPage> {
         Align(
           alignment: Alignment.topLeft,
           child: Container(
-            width: 130,
-            height: 170,
-            padding: const EdgeInsets.only(top: 10, left: 10),
+            width: 220,
+            height: 290,
+            padding: const EdgeInsets.only(top: 30, left: 30),
             child: Center(
                 child: broadcaster
             ),
@@ -271,6 +273,7 @@ class _CallPageState extends State<CallPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('MyOnlineDoctor'),
+        automaticallyImplyLeading: false,
         centerTitle: true,
         actions: [
           IconButton(
@@ -285,11 +288,11 @@ class _CallPageState extends State<CallPage> {
         ],
 
       ),
-      backgroundColor: Colors.black,
+     //backgroundColor: Colors.black,
       body: Center(
         child: Stack(
           children: <Widget>[
-            _viewRows(),
+           _seUnio ?  Center(child:Text('Llamando...') ) : _viewRows(),
             _panel(),
             _toolbar(),
           ],

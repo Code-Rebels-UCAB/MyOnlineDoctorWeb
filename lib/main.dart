@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myonlinedoctorweb/cita/providers/cita_estado.dart';
 import 'package:myonlinedoctorweb/comun/infraestructura/Index.dart';
-import 'package:myonlinedoctorweb/comun/infraestructura/iniciar_cita_servicio.dart';
+import 'package:myonlinedoctorweb/cita/infraestructura/videollamada/servicio/iniciar_cita_servicio.dart';
 import 'package:provider/provider.dart';
 
 
