@@ -21,28 +21,8 @@ class citasDiaLista extends StatefulWidget {
 }
 
 class _citasDiaListaState extends State<citasDiaLista> {
-  late List<Cita> citas = [];
+
   bool _estaCargando = false;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    init();
-  }
-
-  Future init() async {
-    final _citas = await ServiceCitaApi.getCitasDia();
-
-    setState(() {
-      if (citas != null) {
-        citas = _citas!;
-      } else {
-        citas = [];
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,12 +34,12 @@ class _citasDiaListaState extends State<citasDiaLista> {
         backgroundColor: const Color(0xFF00B0E8),
       ),
       body: Container(
-        child: buildCitas(citas, DateTime.now()),
+        child: buildCitas(DateTime.now()),
       ),
     );
   }
 
-  Widget buildCitas(List<Cita> citas, DateTime fechaHoy) {
+  Widget buildCitas(DateTime fechaHoy) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -69,35 +49,50 @@ class _citasDiaListaState extends State<citasDiaLista> {
             alignment: Alignment.center,
             child: Text(
                 "Citas del dia de Hoy: ${DateTime.now().year} / ${DateTime.now().month} / ${DateTime.now().day}",
-                style: const TextStyle(fontSize: 28)),
+                style: TextStyle(fontSize: 28)),
           ),
         ),
-        Expanded(
-            child: ListView.builder(
-          itemCount: citas.length,
-          itemBuilder: (context, index) {
-            final cita = citas[index];
-            return Card(
-                child: Container(
-              padding: const EdgeInsets.all(50.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  CampoCita(
-                      dato: cita.paciente.pNombre +
-                          ' ' +
-                          cita.paciente.pApellido),
-                  CampoCita(dato: cita.horacita),
-                  CampoCita(dato: cita.modalidad),
-                  CampoCita(dato: cita.statuscita),
-                  if (citas[index].statuscita == "Aceptada") _mostrarBotones(cita.idCita),
-                ],
-              ),
-            ));
+        FutureBuilder(
+          future: ServiceCitaApi.getCitasDia(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return const Center(child: CircularProgressIndicator());
+              case ConnectionState.none:
+                return const Center(child: Text('NONE'));
+              case ConnectionState.active:
+              case ConnectionState.done:
+                return _ListaDeCitas(snapshot.data);
+            }
           },
-        ))
+        )
       ],
     );
+  }
+
+  Widget _ListaDeCitas(dynamic data) {
+    return Expanded(
+        child: ListView.builder(
+      itemCount: data.length,
+      itemBuilder: (context, index) {
+        final cita = data[index];
+        return Card(
+            child: Container(
+          padding: const EdgeInsets.all(50.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              CampoCita(
+                  dato: cita.paciente.pNombre + ' ' + cita.paciente.pApellido),
+              CampoCita(dato: cita.horacita),
+              CampoCita(dato: cita.modalidad),
+              CampoCita(dato: cita.statuscita),
+              if (cita.statuscita == "Aceptada") _mostrarBotones()
+            ],
+          ),
+        ));
+      },
+    ));
   }
 
   Widget _mostrarBotones(String citaId) {
