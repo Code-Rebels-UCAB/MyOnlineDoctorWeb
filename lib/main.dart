@@ -3,6 +3,7 @@ import 'package:myonlinedoctorweb/cita/providers/cita_estado.dart';
 import 'package:myonlinedoctorweb/comun/infraestructura/Index.dart';
 import 'package:myonlinedoctorweb/cita/infraestructura/videollamada/servicio/iniciar_cita_servicio.dart';
 import 'package:provider/provider.dart';
+import 'package:myonlinedoctorweb/common/Bienvenido.dart';
 
 
 void main() {
@@ -11,14 +12,23 @@ void main() {
         providers: [
           ChangeNotifierProvider(create: (_)=> CitaEstado(request: IniciarLlamadaRequest()))
         ],
-        child: const MyApp()
+        child: MyApp()
   ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      title: 'Material App',
+      home: FirstPage(),
+    );
+  }
+}
 
-  // This widget is the root of your application.
+class FirstPage extends StatelessWidget {
+  const FirstPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,9 +36,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: const IndexPage(),
+      initialRoute: 'home',
+      routes: {
+        'home': (context) => const Bienvenido(),
+      },
     );
   }
 }
-
-
