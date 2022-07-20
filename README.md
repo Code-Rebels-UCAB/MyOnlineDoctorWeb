@@ -1,6 +1,10 @@
+<p align='center'>
+    <img src='./assets/MyOnlineDoctor.png'>
+</p>
+
 # MyOnlineDoctor Web
 
-Desarrollo del Software.
+Esta es la aplicacion web de **MyOnlineDoctor**, en el cual los doctores podran agendar las citas que le solicitan los pacientes, crear registros medicos de sus pacientes y poder comunicarse con ellos mediante una videollamada!.
 
 ## ℹ️ Pre-requisitos
 
