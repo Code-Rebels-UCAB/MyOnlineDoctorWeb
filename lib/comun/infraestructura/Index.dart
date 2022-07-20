@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:myonlinedoctorweb/cita/providers/cita_estado.dart';
 import 'package:provider/provider.dart';
 
-import 'Llamada.dart';
+import '../../cita/screens/videollamada/Llamada.dart';
 import 'error_dialogo.dart';
 
 
@@ -41,7 +41,7 @@ class _IndexPageState extends State<IndexPage> {
               const SizedBox(height: 40,),
               Image.network('https://tinyurl.com/2p889y4k'),
               const SizedBox(height: 20,),
-              _estaCargando ? const CircularProgressIndicator() : ElevatedButton(
+              _estaCargando ? Center(child: const CircularProgressIndicator()) : ElevatedButton(
                 onPressed: onJoin,
                 child: const Text('Join'),
                 style: ElevatedButton.styleFrom(

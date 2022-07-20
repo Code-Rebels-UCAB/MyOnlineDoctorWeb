@@ -5,9 +5,9 @@ import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
 
 import 'package:provider/provider.dart';
 
-import '../../cita/infraestructura/videollamada/modelo/cita.dart';
-import '../../cita/providers/cita_estado.dart';
-import 'config.dart';
+import '../../infraestructura/videollamada/modelo/cita.dart';
+import '../../providers/cita_estado.dart';
+import '../../../comun/infraestructura/config.dart';
 
 
 
@@ -98,6 +98,7 @@ class _CallPageState extends State<CallPage> {
             final info = 'User Joined: $uid';
             _infoStrings.add(info);
             _users.add(uid);
+            _seUnio = false;
           });
         },
 
@@ -292,7 +293,7 @@ class _CallPageState extends State<CallPage> {
       body: Center(
         child: Stack(
           children: <Widget>[
-           _seUnio ?  Center(child:Text('Llamando...') ) : _viewRows(),
+           _seUnio ? Center(child:Text('Llamando...') ) : _viewRows(),
             _panel(),
             _toolbar(),
           ],
