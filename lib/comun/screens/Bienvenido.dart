@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myonlinedoctorweb/common/NavBar.dart';
+import 'package:myonlinedoctorweb/comun/screens/NavBar.dart';
 
 
 class Bienvenido extends StatelessWidget {

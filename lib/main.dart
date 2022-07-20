@@ -3,7 +3,7 @@ import 'package:myonlinedoctorweb/cita/providers/cita_estado.dart';
 import 'package:myonlinedoctorweb/comun/infraestructura/Index.dart';
 import 'package:myonlinedoctorweb/cita/infraestructura/videollamada/servicio/iniciar_cita_servicio.dart';
 import 'package:provider/provider.dart';
-import 'package:myonlinedoctorweb/common/Bienvenido.dart';
+import 'package:myonlinedoctorweb/comun/screens/Bienvenido.dart';
 
 
 void main() {
