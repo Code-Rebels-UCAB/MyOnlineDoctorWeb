@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:myonlinedoctorweb/cita/infraestructura/servicios/citas_api.dart';
 import 'package:myonlinedoctorweb/cita/screens/widgets/campo_citas.dart';
 import '../../comun/screens/NavBar.dart';
 import '../infraestructura/servicios/solicitudes_cita_api.dart';
-
-
 
 class citasSolicitadasLista extends StatefulWidget {
   @override
@@ -14,7 +13,7 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
   DateTime? date = DateTime.now();
   TimeOfDay? time =
       TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
-
+  late String citaAct;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +75,7 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
               CampoCita(dato: cita.motivo),
               CampoCita(dato: cita.modalidad),
               CampoCita(dato: cita.statuscita),
-              _mostrarBotones(cita)
+              _mostrarBotones(cita, cita.idCita)
             ],
           ),
         ));
@@ -84,7 +83,7 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
     ));
   }
 
-  Widget _mostrarBotones(dynamic cita) {
+  Widget _mostrarBotones(dynamic cita, String idCita) {
     return Row(
       children: [
         SizedBox(
@@ -99,6 +98,9 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
               ),
               onPressed: () {
                 _PopUp(context, cita, date);
+                setState(() {
+                  citaAct = idCita;
+                });
               }),
         ),
         const SizedBox(
@@ -167,10 +169,8 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
                                     initialDate: date!,
                                     firstDate: DateTime(2022),
                                     lastDate: DateTime(2023));
-
-                                if (date == null) return;
                                 setState(() {
-                                  date = newDate;
+                                  if (newDate != null) date = newDate;
                                 });
                               }),
                         ],
@@ -186,7 +186,8 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
                             width: 200,
                             child: Padding(
                                 padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
-                                child: Text('${time!.hour}:${time!.minute}')),
+                                child: Text(
+                                    '${time!.hour}:${(time!.minute < 10) ? '0' + time!.minute.toString() : time!.minute}')),
                           ),
                           ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -199,10 +200,8 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
                               onPressed: () async {
                                 TimeOfDay? newTime = await showTimePicker(
                                     context: context, initialTime: time!);
-
-                                if (date == null) return;
                                 setState(() {
-                                  time = newTime;
+                                  if (newTime != null) time = newTime;
                                 });
                               }),
                         ],
@@ -215,15 +214,19 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
                     padding: EdgeInsets.fromLTRB(0, 0, 0, 50),
                     child: Center(
                       child: SizedBox(
+                        height: 30,
                         width: 150,
                         child: MaterialButton(
                           color: const Color(0xFF00B0E8),
                           elevation: 5.0,
                           child: const Text(
-                            'Submit',
+                            'Agendar Cita',
                             style: TextStyle(color: Colors.white),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            ServiceCitaApi.agendarCita(
+                                citaAct, date.toString(), time.toString());
+                          },
                         ),
                       ),
                     ),

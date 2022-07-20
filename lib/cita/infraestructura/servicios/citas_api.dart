@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 
 import '../modelo/Cita.dart';
 
-
 class ServiceCitaApi {
   // ignore: unused_element
   static Future<List<Cita>?> getTodasCitas() async {
@@ -61,6 +60,28 @@ class ServiceCitaApi {
       }
     } else {
       return citas;
+    }
+  }
+
+  static Future<void> agendarCita(
+      String idCita, String fecha, String hora) async {
+    var headers = {'Content-Type': 'application/json'};
+    var request = http.Request('PUT',
+        Uri.parse('http://localhost:3000/api/cita/putagendarcita/$idCita'));
+    request.body = json.encode({
+      "idCita": idCita,
+      "fechaCita": fecha,
+      "horaCita": hora,
+      "duracion": "60"
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
     }
   }
 }
