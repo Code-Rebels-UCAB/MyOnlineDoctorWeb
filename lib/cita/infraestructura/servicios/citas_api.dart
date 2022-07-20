@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../modelo/Cita.dart';
@@ -64,14 +65,16 @@ class ServiceCitaApi {
   }
 
   static Future<void> agendarCita(
-      String idCita, String fecha, String hora) async {
+      String idCita, String fecha, TimeOfDay? hora) async {
+    var horaString =
+        hora!.hour.toString() + ':' + hora.minute.toString() + ':00';
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request('PUT',
         Uri.parse('http://localhost:3000/api/cita/putagendarcita/$idCita'));
     request.body = json.encode({
       "idCita": idCita,
       "fechaCita": fecha,
-      "horaCita": hora,
+      "horaCita": horaString,
       "duracion": "60"
     });
     request.headers.addAll(headers);

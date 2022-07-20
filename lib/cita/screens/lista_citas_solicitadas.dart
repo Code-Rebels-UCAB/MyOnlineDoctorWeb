@@ -225,7 +225,7 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
                           ),
                           onPressed: () {
                             ServiceCitaApi.agendarCita(
-                                citaAct, date.toString(), time.toString());
+                                citaAct, date.toString(), time);
                           },
                         ),
                       ),
