@@ -1,14 +1,12 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:myonlinedoctorweb/cita/infraestructura/servicios/citasApi.dart';
-import 'package:myonlinedoctorweb/cita/screens/campo_citas.dart';
+import 'package:myonlinedoctorweb/cita/infraestructura/servicios/citas_api.dart';
+import 'package:myonlinedoctorweb/cita/screens/widgets/campo_citas.dart';
 import 'package:myonlinedoctorweb/cita/screens/videollamada/Llamada.dart';
 import 'package:myonlinedoctorweb/comun/screens/NavBar.dart';
 import 'package:provider/provider.dart';
-
 import '../../comun/infraestructura/error_dialogo.dart';
-import '../infraestructura/modelo/Cita.dart';
 import '../providers/cita_estado.dart';
 
 class citasDiaLista extends StatefulWidget {
@@ -87,7 +85,7 @@ class _citasDiaListaState extends State<citasDiaLista> {
               CampoCita(dato: cita.horacita),
               CampoCita(dato: cita.modalidad),
               CampoCita(dato: cita.statuscita),
-              if (cita.statuscita == "Aceptada") _mostrarBotones()
+              if (cita.statuscita == "Aceptada") _mostrarBotones(cita.idCita)
             ],
           ),
         ));
