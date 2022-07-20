@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
 
-class Solicitud with ChangeNotifier{
+class SolicitudCita with ChangeNotifier{
   
 }

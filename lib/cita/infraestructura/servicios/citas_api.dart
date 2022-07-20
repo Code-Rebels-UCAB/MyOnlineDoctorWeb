@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:myonlinedoctorweb/cita/infraestructura/Cita.dart';
+
+import '../modelo/Cita.dart';
+
 
 class ServiceCitaApi {
   // ignore: unused_element

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:myonlinedoctorweb/api/citasApi.dart';
-import 'package:myonlinedoctorweb/cita/screens/campo_citas.dart';
-import 'package:myonlinedoctorweb/common/NavBar.dart';
+import 'package:myonlinedoctorweb/cita/screens/widgets/campo_citas.dart';
+import '../../comun/screens/NavBar.dart';
+import '../infraestructura/servicios/solicitudes_cita_api.dart';
 
-import '../../cita/infraestructura/Cita.dart';
+
 
 class citasSolicitadasLista extends StatefulWidget {
   @override
@@ -42,7 +42,7 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
           ),
         ),
         FutureBuilder(
-          future: ServiceCitaApi.getCitasSolicitadas(),
+          future: ServiceCitaSolicitud.getCitasSolicitadas(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:

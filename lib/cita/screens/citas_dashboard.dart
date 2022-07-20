@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myonlinedoctorweb/cita/screens/lista_citas_dia.dart';
 import 'package:myonlinedoctorweb/cita/screens/lista_todas_citas.dart';
-import 'package:myonlinedoctorweb/common/NavBar.dart';
+import 'package:myonlinedoctorweb/comun/screens/NavBar.dart';
 
 
 

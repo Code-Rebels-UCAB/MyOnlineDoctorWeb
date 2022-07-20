@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:myonlinedoctorweb/api/citasApi.dart';
-import 'package:myonlinedoctorweb/cita/screens/campo_citas.dart';
-import 'package:myonlinedoctorweb/common/NavBar.dart';
+import 'package:myonlinedoctorweb/cita/infraestructura/servicios/citas_api.dart';
+import 'package:myonlinedoctorweb/cita/screens/widgets/campo_citas.dart';
+import 'package:myonlinedoctorweb/comun/screens/NavBar.dart';
 
-import '../../cita/infraestructura/Cita.dart';
+import '../infraestructura/modelo/Cita.dart';
 
 class todasCitasLista extends StatefulWidget {
   todasCitasLista({

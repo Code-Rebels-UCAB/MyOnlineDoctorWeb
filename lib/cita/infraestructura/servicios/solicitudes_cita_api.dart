@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:myonlinedoctorweb/cita/infraestructura/Cita.dart';
 
-class ServiceCitaApi {
+import '../modelo/Cita.dart';
+
+
+class ServiceCitaSolicitud {
   // ignore: unused_element
-  static Future<List<Cita>?> getTodasCitas() async {
+  static Future<List<Cita>?> getTodasSolicituaestructurdes() async {
     final url = Uri.parse(
         'http://localhost:3000/api/cita/getcitasdoctor/dd2d571a-aadf-4213-a81f-ade5f5e89893');
     final http.Response response;
