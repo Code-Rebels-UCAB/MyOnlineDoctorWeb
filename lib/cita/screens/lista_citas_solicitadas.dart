@@ -43,14 +43,18 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
         FutureBuilder(
           future: ServiceCitaSolicitud.getCitasSolicitadas(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return const Center(child: CircularProgressIndicator());
-              case ConnectionState.none:
-                return const Center(child: Text('NONE'));
-              case ConnectionState.active:
-              case ConnectionState.done:
-                return _ListaDeCitas(snapshot.data);
+            if (snapshot.hasData) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return const Center(child: CircularProgressIndicator());
+                case ConnectionState.none:
+                  return const Center(child: Text('NONE'));
+                case ConnectionState.active:
+                case ConnectionState.done:
+                  return _ListaDeCitas(snapshot.data);
+              }
+            } else {
+              return const Center(child: Text('SERVIDOR CAIDO'));
             }
           },
         )
@@ -60,30 +64,33 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
 
   Widget _ListaDeCitas(dynamic data) {
     return Expanded(
-        child: ListView.builder(
-      itemCount: data.length,
-      itemBuilder: (context, index) {
-        final cita = data[index];
-        return Card(
-            child: Container(
-          padding: const EdgeInsets.all(50.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: CampoCita(
-                    dato:
-                        cita.paciente.pNombre + ' ' + cita.paciente.pApellido),
-              ),
-              Expanded(child: CampoCita(dato: cita.motivo)),
-              Expanded(child: CampoCita(dato: cita.modalidad)),
-              Expanded(child: CampoCita(dato: cita.statuscita)),
-              _mostrarBotones(cita, cita.idCita)
-            ],
-          ),
-        ));
-      },
-    ));
+        child: data.length >= 1
+            ? ListView.builder(
+                itemCount: data.length,
+                itemBuilder: (context, index) {
+                  final cita = data[index];
+                  return Card(
+                      child: Container(
+                    padding: const EdgeInsets.all(50.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: CampoCita(
+                              dato: cita.paciente.pNombre +
+                                  ' ' +
+                                  cita.paciente.pApellido),
+                        ),
+                        Expanded(child: CampoCita(dato: cita.motivo)),
+                        Expanded(child: CampoCita(dato: cita.modalidad)),
+                        Expanded(child: CampoCita(dato: cita.statuscita)),
+                        _mostrarBotones(cita, cita.idCita)
+                      ],
+                    ),
+                  ));
+                },
+              )
+            : const Center(child: Text('NO HAY SOLICITUDES ACTUALMENTE')));
   }
 
   Widget _mostrarBotones(dynamic cita, String idCita) {
