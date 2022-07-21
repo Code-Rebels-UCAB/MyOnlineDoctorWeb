@@ -65,16 +65,14 @@ class ServiceCitaApi {
   }
 
   static Future<void> agendarCita(
-      String idCita, String fecha, TimeOfDay? hora) async {
-    var horaString =
-        hora!.hour.toString() + ':' + hora.minute.toString() + ':00';
+      String idCita, String fecha, String? hora) async {
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request('PUT',
         Uri.parse('http://localhost:3000/api/cita/putagendarcita/$idCita'));
     request.body = json.encode({
       "idCita": idCita,
       "fechaCita": fecha,
-      "horaCita": horaString,
+      "horaCita": hora,
       "duracion": "60"
     });
     request.headers.addAll(headers);
