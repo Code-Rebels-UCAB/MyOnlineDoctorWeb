@@ -128,7 +128,6 @@ class _citasDiaListaState extends State<citasDiaLista> {
   }
 
   Future<void> onJoin(String citaid) async {
-    print(citaid);
     setState(() {
       _estaCargando = true;
     });

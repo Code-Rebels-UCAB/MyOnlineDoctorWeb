@@ -5,6 +5,7 @@ import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
 
 import 'package:provider/provider.dart';
 
+import '../../../comun/infraestructura/error_dialogo.dart';
 import '../../infraestructura/videollamada/modelo/cita_iniciada.dart';
 import '../../providers/cita_estado.dart';
 import '../../../comun/infraestructura/config.dart';
@@ -91,6 +92,8 @@ class _CallPageState extends State<CallPage> {
             _infoStrings.add('Leave Channel');
             _users.clear();
           });
+          cambiarStatusCita(videollamadaCita!.idCita);
+
         },
 
         userJoined: (uid, elapsed) {
@@ -301,5 +304,14 @@ class _CallPageState extends State<CallPage> {
         ),
       ),
     );
+  }
+
+  Future<void> cambiarStatusCita(String citaid) async {
+    try {
+      await Provider.of<CitaEstado>(context, listen: false).enviarCitaDesdeFront(citaid);
+    }catch(e){
+      ErrorDialog.showErrorDialog(e.toString(), context);
+    }
+
   }
 }
