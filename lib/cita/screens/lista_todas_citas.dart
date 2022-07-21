@@ -71,13 +71,16 @@ class _todasCitasListaState extends State<todasCitasLista> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              CampoCita(
-                  dato: cita.paciente.pNombre + ' ' + cita.paciente.pApellido),
-              CampoCita(dato: cita.fechacita),
-              CampoCita(dato: cita.horacita),
-              CampoCita(dato: cita.modalidad),
-              CampoCita(dato: cita.statuscita),
-              if (data[index].statuscita == "Aceptada") _mostrarBotones()
+              Expanded(
+                child: CampoCita(
+                    dato:
+                        cita.paciente.pNombre + ' ' + cita.paciente.pApellido),
+              ),
+              Expanded(child: CampoCita(dato: cita.fechacita)),
+              Expanded(child: CampoCita(dato: cita.horacita)),
+              Expanded(child: CampoCita(dato: cita.modalidad)),
+              Expanded(child: CampoCita(dato: cita.statuscita)),
+              if (cita.statuscita == "Aceptada") _mostrarBotones(cita.idCita)
             ],
           ),
         ));
@@ -85,7 +88,7 @@ class _todasCitasListaState extends State<todasCitasLista> {
     ));
   }
 
-  Widget _mostrarBotones() {
+  Widget _mostrarBotones(String idCita) {
     return Row(
       children: [
         SizedBox(
@@ -98,7 +101,9 @@ class _todasCitasListaState extends State<todasCitasLista> {
                 'Suspender',
                 style: TextStyle(fontSize: 22),
               ),
-              onPressed: () {}),
+              onPressed: () {
+                ServiceCitaApi.suspenderCita(idCita);
+              }),
         ),
       ],
     );

@@ -19,7 +19,6 @@ class citasDiaLista extends StatefulWidget {
 }
 
 class _citasDiaListaState extends State<citasDiaLista> {
-
   bool _estaCargando = false;
 
   @override
@@ -80,11 +79,13 @@ class _citasDiaListaState extends State<citasDiaLista> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              CampoCita(
-                  dato: cita.paciente.pNombre + ' ' + cita.paciente.pApellido),
-              CampoCita(dato: cita.horacita),
-              CampoCita(dato: cita.modalidad),
-              CampoCita(dato: cita.statuscita),
+              Expanded(
+                child: CampoCita(
+                    dato: cita.paciente.pNombre + ' ' + cita.paciente.pApellido),
+              ),
+              Expanded(child: CampoCita(dato: cita.horacita)),
+              Expanded(child: CampoCita(dato: cita.modalidad)),
+              Expanded(child: CampoCita(dato: cita.statuscita)),
               if (cita.statuscita == "Aceptada") _mostrarBotones(cita.idCita)
             ],
           ),
@@ -106,7 +107,11 @@ class _citasDiaListaState extends State<citasDiaLista> {
                 'Llamar',
                 style: TextStyle(fontSize: 22),
               ),
-              onPressed: () {if (citaId!=null){onJoin(citaId);} }),
+              onPressed: () {
+                if (citaId != null) {
+                  onJoin(citaId);
+                }
+              }),
         ),
         const SizedBox(
           width: 50.0,
@@ -134,21 +139,19 @@ class _citasDiaListaState extends State<citasDiaLista> {
     });
     await window.navigator.getUserMedia(audio: true, video: true);
     try {
-      await Provider.of<CitaEstado>(context, listen: false).obtenerCitasDesdApi(citaid);
+      await Provider.of<CitaEstado>(context, listen: false)
+          .obtenerCitasDesdApi(citaid);
       await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => const CallPage(),
-          )
-      );
-    }catch(e){
+          ));
+    } catch (e) {
       ErrorDialog.showErrorDialog(e.toString(), context);
-    }finally{
+    } finally {
       setState(() {
         _estaCargando = false;
       });
     }
-
-
   }
 }

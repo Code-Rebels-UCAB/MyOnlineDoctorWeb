@@ -70,11 +70,14 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              CampoCita(
-                  dato: cita.paciente.pNombre + ' ' + cita.paciente.pApellido),
-              CampoCita(dato: cita.motivo),
-              CampoCita(dato: cita.modalidad),
-              CampoCita(dato: cita.statuscita),
+              Expanded(
+                child: CampoCita(
+                    dato:
+                        cita.paciente.pNombre + ' ' + cita.paciente.pApellido),
+              ),
+              Expanded(child: CampoCita(dato: cita.motivo)),
+              Expanded(child: CampoCita(dato: cita.modalidad)),
+              Expanded(child: CampoCita(dato: cita.statuscita)),
               _mostrarBotones(cita, cita.idCita)
             ],
           ),
@@ -103,21 +106,6 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
                 });
               }),
         ),
-        const SizedBox(
-          width: 50.0,
-        ),
-        SizedBox(
-          height: 50.0,
-          child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: const Color(0xFFFF0000),
-              ),
-              child: const Text(
-                'Rechazar',
-                style: TextStyle(fontSize: 22),
-              ),
-              onPressed: () {}),
-        )
       ],
     );
   }
@@ -224,8 +212,8 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
                             style: TextStyle(color: Colors.white),
                           ),
                           onPressed: () {
-                            ServiceCitaApi.agendarCita(
-                                citaAct, date.toString(), time.toString());
+                            ServiceCitaApi.agendarCita(citaAct, date.toString(),
+                                '${time!.hour}:${time!.minute}');
                           },
                         ),
                       ),
