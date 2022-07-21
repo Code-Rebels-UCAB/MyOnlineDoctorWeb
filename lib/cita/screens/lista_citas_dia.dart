@@ -19,7 +19,6 @@ class citasDiaLista extends StatefulWidget {
 }
 
 class _citasDiaListaState extends State<citasDiaLista> {
-
   bool _estaCargando = false;
 
   @override
@@ -53,14 +52,18 @@ class _citasDiaListaState extends State<citasDiaLista> {
         FutureBuilder(
           future: ServiceCitaApi.getCitasDia(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return const Center(child: CircularProgressIndicator());
-              case ConnectionState.none:
-                return const Center(child: Text('NONE'));
-              case ConnectionState.active:
-              case ConnectionState.done:
-                return _ListaDeCitas(snapshot.data);
+            if (snapshot.hasData) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return const Center(child: CircularProgressIndicator());
+                case ConnectionState.none:
+                  return const Center(child: Text('NONE'));
+                case ConnectionState.active:
+                case ConnectionState.done:
+                  return _ListaDeCitas(snapshot.data);
+              }
+            } else {
+              return const Center(child: Text('SERVIDOR CAIDO'));
             }
           },
         )
@@ -70,27 +73,34 @@ class _citasDiaListaState extends State<citasDiaLista> {
 
   Widget _ListaDeCitas(dynamic data) {
     return Expanded(
-        child: ListView.builder(
-      itemCount: data.length,
-      itemBuilder: (context, index) {
-        final cita = data[index];
-        return Card(
-            child: Container(
-          padding: const EdgeInsets.all(50.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              CampoCita(
-                  dato: cita.paciente.pNombre + ' ' + cita.paciente.pApellido),
-              CampoCita(dato: cita.horacita),
-              CampoCita(dato: cita.modalidad),
-              CampoCita(dato: cita.statuscita),
-              if (cita.statuscita == "Aceptada") _mostrarBotones(cita.idCita)
-            ],
-          ),
-        ));
-      },
-    ));
+        child: data.length >= 1
+            ? ListView.builder(
+                itemCount: data.length,
+                itemBuilder: (context, index) {
+                  final cita = data[index];
+                  return Card(
+                      child: Container(
+                    padding: const EdgeInsets.all(50.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: CampoCita(
+                              dato: cita.paciente.pNombre +
+                                  ' ' +
+                                  cita.paciente.pApellido),
+                        ),
+                        Expanded(child: CampoCita(dato: cita.horacita)),
+                        Expanded(child: CampoCita(dato: cita.modalidad)),
+                        Expanded(child: CampoCita(dato: cita.statuscita)),
+                        if (cita.statuscita == "Aceptada")
+                          _mostrarBotones(cita.idCita)
+                      ],
+                    ),
+                  ));
+                },
+              )
+            : const Center(child: Text('NO HAY CITAS DEL DIA')));
   }
 
   Widget _mostrarBotones(String citaId) {
@@ -106,7 +116,11 @@ class _citasDiaListaState extends State<citasDiaLista> {
                 'Llamar',
                 style: TextStyle(fontSize: 22),
               ),
-              onPressed: () {if (citaId!=null){onJoin(citaId);} }),
+              onPressed: () {
+                if (citaId != null) {
+                  onJoin(citaId);
+                }
+              }),
         ),
         const SizedBox(
           width: 50.0,
@@ -133,21 +147,19 @@ class _citasDiaListaState extends State<citasDiaLista> {
     });
     await window.navigator.getUserMedia(audio: true, video: true);
     try {
-      await Provider.of<CitaEstado>(context, listen: false).obtenerCitasDesdApi(citaid);
+      await Provider.of<CitaEstado>(context, listen: false)
+          .obtenerCitasDesdApi(citaid);
       await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => const CallPage(),
-          )
-      );
-    }catch(e){
+          ));
+    } catch (e) {
       ErrorDialog.showErrorDialog(e.toString(), context);
-    }finally{
+    } finally {
       setState(() {
         _estaCargando = false;
       });
     }
-
-
   }
 }
