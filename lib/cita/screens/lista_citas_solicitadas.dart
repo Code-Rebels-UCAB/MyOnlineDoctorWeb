@@ -14,6 +14,7 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
   TimeOfDay? time =
       TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
   late String citaAct;
+  bool isErrorDate = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,78 +131,109 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
                         ' ' +
                         cita.paciente.pApellido)),
                 content: Container(
-                  height: 150,
+                  height: 250,
                   width: 500,
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                  child: Expanded(
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Fecha: ',
+                            ),
+                            SizedBox(
+                              width: 200,
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(40, 0, 0, 0),
+                                  child: Column(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Text(
+                                              '${date != null ? date!.year : 'none'} / ${date != null ? date!.month : 'none'} / ${date != null ? date!.day : 'none'}'),
+                                        ],
+                                      ),
+                                    ],
+                                  )),
+                            ),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: const Color(0xFF00B0E8),
+                                ),
+                                child: const Text(
+                                  'Seleccionar Fecha',
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                                onPressed: () async {
+                                  DateTime? newDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: date!,
+                                      firstDate: DateTime(2022),
+                                      lastDate: DateTime(2023));
+                                  setState(() {
+                                    if (newDate != null &&
+                                        date!.isAfter(DateTime.now())) {
+                                      date = newDate;
+                                      isErrorDate = false;
+                                    } else {
+                                      date = DateTime.now();
+                                      isErrorDate = true;
+                                    }
+                                  });
+                                }),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 60,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('Hora:  '),
+                            SizedBox(
+                              width: 200,
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(40, 0, 0, 0),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                          '${time!.hour}:${(time!.minute < 10) ? '0' + time!.minute.toString() : time!.minute}'),
+                                    ],
+                                  )),
+                            ),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: const Color(0xFF00B0E8),
+                                ),
+                                child: const Text(
+                                  'Seleccionar hora',
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                                onPressed: () async {
+                                  TimeOfDay? newTime = await showTimePicker(
+                                      context: context, initialTime: time!);
+                                  setState(() {
+                                    if (newTime != null) time = newTime;
+                                  });
+                                }),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        if (isErrorDate == true)
                           const Text(
-                            'Fecha: ',
-                          ),
-                          SizedBox(
-                            width: 200,
-                            child: Padding(
-                                padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
-                                child: Text(
-                                    '${date != null ? date!.year : 'none'} / ${date != null ? date!.month : 'none'} / ${date != null ? date!.day : 'none'}')),
-                          ),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: const Color(0xFF00B0E8),
-                              ),
-                              child: const Text(
-                                'Seleccionar Fecha',
-                                style: TextStyle(fontSize: 14),
-                              ),
-                              onPressed: () async {
-                                DateTime? newDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: date!,
-                                    firstDate: DateTime(2022),
-                                    lastDate: DateTime(2023));
-                                setState(() {
-                                  if (newDate != null) date = newDate;
-                                });
-                              }),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 60,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text('Hora:  '),
-                          SizedBox(
-                            width: 200,
-                            child: Padding(
-                                padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
-                                child: Text(
-                                    '${time!.hour}:${(time!.minute < 10) ? '0' + time!.minute.toString() : time!.minute}')),
-                          ),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: const Color(0xFF00B0E8),
-                              ),
-                              child: const Text(
-                                'Seleccionar hora',
-                                style: TextStyle(fontSize: 14),
-                              ),
-                              onPressed: () async {
-                                TimeOfDay? newTime = await showTimePicker(
-                                    context: context, initialTime: time!);
-                                setState(() {
-                                  if (newTime != null) time = newTime;
-                                });
-                              }),
-                        ],
-                      ),
-                    ],
+                              'Fecha Invalida [Selecciona una fecha despues de hoy]',
+                              style:
+                                  TextStyle(color: Colors.orange, fontSize: 16))
+                      ],
+                    ),
                   ),
                 ),
                 actions: <Widget>[
