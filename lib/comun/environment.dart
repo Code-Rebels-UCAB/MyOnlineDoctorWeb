@@ -1,1 +1,0 @@
-const SERVER_API = "https://myonlinedoctor-api.herokuapp.com";
