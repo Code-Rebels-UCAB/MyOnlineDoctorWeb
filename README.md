@@ -3,6 +3,7 @@
 </p>
 
 # MyOnlineDoctor Web
+[![made-with-typeScript](https://img.shields.io/badge/Made%20with-Flutter-7345CF.svg)](https://flutter.dev/) [![made-with-typeScript](https://img.shields.io/badge/Made%20with-Firebase-DE7C1B.svg)](https://firebase.google.com/) [![made-with-typeScript](https://img.shields.io/badge/Made%20with-Agora-1B85DE.svg)](https://www.agora.io/en/)
 
 Esta es la aplicacion web de **MyOnlineDoctor**, en el cual los doctores podran agendar las citas que le solicitan los pacientes, crear registros medicos de sus pacientes y poder comunicarse con ellos mediante una videollamada!.
 
@@ -49,6 +50,13 @@ $ flutter pub get
 ```
 $ flutter run
 ```
+## Integrantes y Commits
+
+| Integrantes | Commits mas importantes | Pull Request |
+| ------------| ------------------------| ------------ |
+| Iliana Dias | <p>1.- Implementación de llamada, manejo de estados de la llamada y servicio/peticiones request de la llamada.</p>| <p>1.- https://github.com/Code-Rebels-UCAB/MyOnlineDoctorWeb/pull/1</p>|
+| Tadeo Vazquez | <p>1.- Implementación de Citas Solicitadas Screens terminada.</p><p>2.- Implementación de Citas Solicitadas, Citas del dia y Listas de Citas.(Screens)</p><p>3.- Creación del servicio Suspender Cita.</p>| <p>1.- https://github.com/Code-Rebels-UCAB/MyOnlineDoctorWeb/pull/4</p><p>2.- https://github.com/Code-Rebels-UCAB/MyOnlineDoctorWeb/pull/3</p><p>3.- https://github.com/Code-Rebels-UCAB/MyOnlineDoctorWeb/pull/2</p>|
+
 
 ### 🔥 [Code Rebels](https://github.com/Code-Rebels-UCAB)
 
@@ -60,3 +68,4 @@ $ flutter run
 - **Jose Flores - [Joshep27](https://github.com/Joshep27)**
 - **Alines Ortiz - [aliortiz2000](https://github.com/aliortiz2000)**
 - **Carlos Arriaga - [carlosead1410](https://github.com/carlosead1410)**
+
