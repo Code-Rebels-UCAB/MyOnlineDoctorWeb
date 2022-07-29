@@ -2,13 +2,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../comun/environment.dart';
 import '../modelo/Cita.dart';
 
 class ServiceCitaApi {
   // ignore: unused_element
   static Future<List<Cita>?> getTodasCitas() async {
     final url = Uri.parse(
-        'http://localhost:3000/api/cita/getcitasdoctor/dd2d571a-aadf-4213-a81f-ade5f5e89893');
+        '${SERVER_API}/api/cita/getcitasdoctor/dd2d571a-aadf-4213-a81f-ade5f5e89893');
     final http.Response response;
     try {
       response = await http.get(url);
@@ -37,7 +38,7 @@ class ServiceCitaApi {
 
   static Future<List<Cita>?> getCitasDia() async {
     final url = Uri.parse(
-        'http://localhost:3000/api/cita/citasAlDiadoctor/dd2d571a-aadf-4213-a81f-ade5f5e89893');
+        '${SERVER_API}/api/cita/citasAlDiadoctor/dd2d571a-aadf-4213-a81f-ade5f5e89893');
     final http.Response response;
     try {
       response = await http.get(url);
@@ -68,7 +69,7 @@ class ServiceCitaApi {
       String idCita, String fecha, String? hora) async {
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request('PUT',
-        Uri.parse('http://localhost:3000/api/cita/putagendarcita/$idCita'));
+        Uri.parse('${SERVER_API}/api/cita/putagendarcita/$idCita'));
     request.body = json.encode({
       "idCita": idCita,
       "fechaCita": fecha,
@@ -91,7 +92,7 @@ class ServiceCitaApi {
     var request = http.Request(
         'PUT',
         Uri.parse(
-            'http://localhost:3000/api/cita/suspendercita?citaId=$idCita'));
+            '${SERVER_API}/api/cita/suspendercita?citaId=$idCita'));
 
     request.headers.addAll(headers);
 
