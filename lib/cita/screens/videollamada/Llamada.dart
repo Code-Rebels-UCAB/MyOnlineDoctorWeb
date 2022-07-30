@@ -192,6 +192,7 @@ class _CallPageState extends State<CallPage> {
           RawMaterialButton(
             onPressed: () {
               cambiarStatusCita(videollamadaCita!.idCita);
+              _engine.leaveChannel();
               Navigator.pop(context);},
             child: const Icon(
               Icons.call_end,
