@@ -27,6 +27,7 @@ class _CallPageState extends State<CallPage> {
   bool muted = false;
   bool viewPanel = false;
   bool _seUnio = true;
+  bool _seFue = false;
   late RtcEngine _engine;
   CitaIniciada? videollamadaCita;
 
@@ -91,9 +92,9 @@ class _CallPageState extends State<CallPage> {
           setState(() {
             _infoStrings.add('Leave Channel');
             _users.clear();
-          });
-          cambiarStatusCita(videollamadaCita!.idCita);
+            //_seFue = true;
 
+          });
         },
 
         userJoined: (uid, elapsed) {
@@ -110,7 +111,9 @@ class _CallPageState extends State<CallPage> {
             final info = 'User offline: $uid';
             _infoStrings.add(info);
             _users.remove(uid);
+            _engine.leaveChannel();
           });
+          Navigator.pop(context);
         },
 
         firstRemoteVideoFrame: (uid, width, height, elapsed) {
@@ -190,7 +193,9 @@ class _CallPageState extends State<CallPage> {
             padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
-            onPressed: ()=> Navigator.pop(context),
+            onPressed: () {
+              cambiarStatusCita(videollamadaCita!.idCita);
+              Navigator.pop(context);},
             child: const Icon(
               Icons.call_end,
               color: Colors.white,
@@ -297,7 +302,7 @@ class _CallPageState extends State<CallPage> {
       body: Center(
         child: Stack(
           children: <Widget>[
-           _seUnio ? Center(child:Text('Llamando...') ) : _viewRows(),
+           _seUnio || _seFue ? Center(child:Text(_seFue ? 'El paciente ha cortado la llamada :c' : 'Llamando...') ) : _viewRows(),
             _panel(),
             _toolbar(),
           ],
