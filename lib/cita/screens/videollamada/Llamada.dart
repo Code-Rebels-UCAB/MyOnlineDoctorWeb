@@ -4,7 +4,7 @@ import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
 
 import 'package:provider/provider.dart';
-
+import '../../../comun/infraestructura/error_dialogo.dart';
 import '../../infraestructura/videollamada/modelo/cita_iniciada.dart';
 import '../../providers/cita_estado.dart';
 import '../../../comun/infraestructura/config.dart';
@@ -107,7 +107,10 @@ class _CallPageState extends State<CallPage> {
             final info = 'User offline: $uid';
             _infoStrings.add(info);
             _users.remove(uid);
+            _engine.leaveChannel();
           });
+          cambiarStatusCita(videollamadaCita!.idCita);
+          Navigator.pop(context);
         },
 
         firstRemoteVideoFrame: (uid, width, height, elapsed) {
@@ -187,7 +190,10 @@ class _CallPageState extends State<CallPage> {
             padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
-            onPressed: ()=> Navigator.pop(context),
+            onPressed: () {
+              cambiarStatusCita(videollamadaCita!.idCita);
+              _engine.leaveChannel();
+              Navigator.pop(context);},
             child: const Icon(
               Icons.call_end,
               color: Colors.white,
@@ -294,12 +300,21 @@ class _CallPageState extends State<CallPage> {
       body: Center(
         child: Stack(
           children: <Widget>[
-           _seUnio ? Center(child:Text('Llamando...') ) : _viewRows(),
+           _seUnio ? Center(child:Text('Llamando...')) : _viewRows(),
             _panel(),
             _toolbar(),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> cambiarStatusCita(String citaid) async {
+    try {
+      await Provider.of<CitaEstado>(context, listen: false).enviarCitaDesdeFront(citaid);
+    }catch(e){
+      ErrorDialog.showErrorDialog(e.toString(), context);
+    }
+
   }
 }

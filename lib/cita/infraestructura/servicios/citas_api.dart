@@ -7,9 +7,12 @@ import '../modelo/Cita.dart';
 
 class ServiceCitaApi {
   // ignore: unused_element
+
+  static String urlLocal = SERVER_API;
+
   static Future<List<Cita>?> getTodasCitas() async {
     final url = Uri.parse(
-        '${SERVER_API}/api/cita/getcitasdoctor/dd2d571a-aadf-4213-a81f-ade5f5e89893');
+        urlLocal + '/api/cita/getcitasdoctor/dd2d571a-aadf-4213-a81f-ade5f5e89893');
     final http.Response response;
     try {
       response = await http.get(url);
@@ -38,7 +41,7 @@ class ServiceCitaApi {
 
   static Future<List<Cita>?> getCitasDia() async {
     final url = Uri.parse(
-        '${SERVER_API}/api/cita/citasAlDiadoctor/dd2d571a-aadf-4213-a81f-ade5f5e89893');
+        urlLocal + '/api/cita/citasAlDiadoctor/dd2d571a-aadf-4213-a81f-ade5f5e89893');
     final http.Response response;
     try {
       response = await http.get(url);
@@ -69,7 +72,7 @@ class ServiceCitaApi {
       String idCita, String fecha, String? hora) async {
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request('PUT',
-        Uri.parse('${SERVER_API}/api/cita/putagendarcita/$idCita'));
+        Uri.parse(urlLocal + '/api/cita/putagendarcita/$idCita'));
     request.body = json.encode({
       "idCita": idCita,
       "fechaCita": fecha,
@@ -92,7 +95,7 @@ class ServiceCitaApi {
     var request = http.Request(
         'PUT',
         Uri.parse(
-            '${SERVER_API}/api/cita/suspendercita?citaId=$idCita'));
+            urlLocal + '/api/cita/suspendercita?citaId=$idCita'));
 
     request.headers.addAll(headers);
 

@@ -6,9 +6,12 @@ import '../modelo/Cita.dart';
 
 class ServiceCitaSolicitud {
   // ignore: unused_element
+
+  static String urlLocal = SERVER_API;
+
   static Future<List<Cita>?> getTodasSolicituaestructurdes() async {
     final url = Uri.parse(
-        '${SERVER_API}/api/cita/getcitasdoctor/dd2d571a-aadf-4213-a81f-ade5f5e89893');
+        urlLocal + '/api/cita/getcitasdoctor/dd2d571a-aadf-4213-a81f-ade5f5e89893');
     final http.Response response;
     try {
       response = await http.get(url);
@@ -37,7 +40,7 @@ class ServiceCitaSolicitud {
 
   static Future<List<Cita>?> getCitasDia() async {
     final url = Uri.parse(
-        '${SERVER_API}/api/cita/citasAlDiadoctor/dd2d571a-aadf-4213-a81f-ade5f5e89893');
+        urlLocal + '/api/cita/citasAlDiadoctor/dd2d571a-aadf-4213-a81f-ade5f5e89893');
     final http.Response response;
     try {
       response = await http.get(url);
@@ -66,7 +69,7 @@ class ServiceCitaSolicitud {
 
   static Future<List<Cita>?> getCitasSolicitadas() async {
     final url = Uri.parse(
-        '${SERVER_API}/api/cita/getsolicitudesdoctor/dd2d571a-aadf-4213-a81f-ade5f5e89893');
+        urlLocal + '/api/cita/getsolicitudesdoctor/dd2d571a-aadf-4213-a81f-ade5f5e89893');
     final http.Response response;
     try {
       response = await http.get(url);
