@@ -10,9 +10,7 @@ import '../modelo/cita_iniciada.dart';
 
 class LlamadaRequest implements CitaRequestAbstract {
 
-
-  String url =  'http://127.0.0.1:3000';
-  //String url = SERVER_API;
+  String url = SERVER_API;
 
   Future<CitaIniciada> obtenerDataVideollamada(String citaid) async {
     try {

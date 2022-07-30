@@ -7,8 +7,7 @@ import '../modelo/Cita.dart';
 class ServiceCitaSolicitud {
   // ignore: unused_element
 
-  static String urlLocal =  'http://127.0.0.1:3000';
-  //static String urlLocal = SERVER_API;
+  static String urlLocal = SERVER_API;
 
   static Future<List<Cita>?> getTodasSolicituaestructurdes() async {
     final url = Uri.parse(
