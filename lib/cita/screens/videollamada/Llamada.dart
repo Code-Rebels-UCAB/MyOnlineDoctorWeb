@@ -27,7 +27,6 @@ class _CallPageState extends State<CallPage> {
   bool muted = false;
   bool viewPanel = false;
   bool _seUnio = true;
-  bool _seFue = false;
   late RtcEngine _engine;
   CitaIniciada? videollamadaCita;
 
@@ -92,8 +91,6 @@ class _CallPageState extends State<CallPage> {
           setState(() {
             _infoStrings.add('Leave Channel');
             _users.clear();
-            //_seFue = true;
-
           });
         },
 
@@ -302,7 +299,7 @@ class _CallPageState extends State<CallPage> {
       body: Center(
         child: Stack(
           children: <Widget>[
-           _seUnio || _seFue ? Center(child:Text(_seFue ? 'El paciente ha cortado la llamada :c' : 'Llamando...') ) : _viewRows(),
+           _seUnio ? Center(child:Text('Llamando...')) : _viewRows(),
             _panel(),
             _toolbar(),
           ],

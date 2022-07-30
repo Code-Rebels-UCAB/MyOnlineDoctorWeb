@@ -2,7 +2,6 @@
 import 'package:http/http.dart' as http;
 import 'package:myonlinedoctorweb/cita/infraestructura/modelo/cita_finalizada.dart';
 import 'dart:convert';
-
 import '../../../../comun/environment.dart';
 import '../../puertos/cita_request_abstract.dart';
 import '../modelo/cita_iniciada.dart';
@@ -36,9 +35,7 @@ class LlamadaRequest implements CitaRequestAbstract {
           headers: {"Content-Type":"Aplication/json"}).timeout(const Duration(seconds: 15));
       //    final datosAExtraer = jsonDecode(response.body)['valor'];
       //    final finalizarCita =  CitaFinalizada.fromJson(datosAExtraer);
-      print(response);
       return;
-
     } catch(e) {
     throw Exception('Algo salió mal');
     }
