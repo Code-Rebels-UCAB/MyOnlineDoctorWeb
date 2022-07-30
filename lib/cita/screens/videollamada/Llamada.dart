@@ -4,7 +4,6 @@ import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
 
 import 'package:provider/provider.dart';
-
 import '../../../comun/infraestructura/error_dialogo.dart';
 import '../../infraestructura/videollamada/modelo/cita_iniciada.dart';
 import '../../providers/cita_estado.dart';
@@ -110,6 +109,7 @@ class _CallPageState extends State<CallPage> {
             _users.remove(uid);
             _engine.leaveChannel();
           });
+          cambiarStatusCita(videollamadaCita!.idCita);
           Navigator.pop(context);
         },
 

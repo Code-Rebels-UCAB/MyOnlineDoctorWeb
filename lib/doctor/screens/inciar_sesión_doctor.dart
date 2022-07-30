@@ -1,5 +1,4 @@
 
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myonlinedoctorweb/comun/screens/Bienvenido.dart';
@@ -42,7 +41,7 @@ class _iniciarSesionState extends State<IniciarSesion> {
                     margin: EdgeInsets.symmetric(horizontal: 450),
                     child: TextFormField(
                       decoration: const InputDecoration(
-                        hintText: "Correo",
+                        hintText: "Correo electronico",
                         counterStyle: TextStyle(fontSize: 50),
                         border: InputBorder.none,
                       ),
