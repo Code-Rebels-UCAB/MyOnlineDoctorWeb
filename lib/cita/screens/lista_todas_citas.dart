@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:myonlinedoctorweb/cita/infraestructura/modelo/CitaStream.dart';
 import 'package:myonlinedoctorweb/cita/infraestructura/servicios/citas_api.dart';
 import 'package:myonlinedoctorweb/cita/screens/widgets/campo_citas.dart';
+import 'package:myonlinedoctorweb/cita/screens/widgets/popUpDone.dart';
 import 'package:myonlinedoctorweb/comun/screens/NavBar.dart';
 
 import '../infraestructura/modelo/Cita.dart';
@@ -15,6 +17,20 @@ class todasCitasLista extends StatefulWidget {
 }
 
 class _todasCitasListaState extends State<todasCitasLista> {
+  // Future<List<Cita>?> citasApi = ServiceCitaApi.getTodasCitas();
+  late Stream<List<Cita>?> listCitas;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    openCitaStream();
+  }
+
+  void openCitaStream() {
+    setState(() => listCitas = CitaStream.streamTodasCitas());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,12 +41,12 @@ class _todasCitasListaState extends State<todasCitasLista> {
         backgroundColor: const Color(0xFF00B0E8),
       ),
       body: Container(
-        child: buildCitas(DateTime.now()),
+        child: buildCitas(),
       ),
     );
   }
 
-  Widget buildCitas(DateTime fechaHoy) {
+  Widget buildCitas() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -41,8 +57,8 @@ class _todasCitasListaState extends State<todasCitasLista> {
             child: Text("Todas las citas", style: TextStyle(fontSize: 28)),
           ),
         ),
-        FutureBuilder(
-          future: ServiceCitaApi.getTodasCitas(),
+        StreamBuilder(
+          stream: listCitas,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               switch (snapshot.connectionState) {
@@ -111,9 +127,13 @@ class _todasCitasListaState extends State<todasCitasLista> {
               ),
               onPressed: () {
                 ServiceCitaApi.suspenderCita(idCita);
+                popUpDone(context, "Cita suspendida exitosamente");
+                openCitaStream();
               }),
         ),
       ],
     );
   }
+
+  
 }
