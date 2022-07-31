@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myonlinedoctorweb/cita/infraestructura/modelo/Cita.dart';
+import 'package:myonlinedoctorweb/cita/infraestructura/modelo/CitaStream.dart';
 import 'package:myonlinedoctorweb/cita/infraestructura/servicios/citas_api.dart';
 import 'package:myonlinedoctorweb/cita/screens/widgets/campo_citas.dart';
 import '../../comun/screens/NavBar.dart';
@@ -15,6 +17,9 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
       TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
   late String citaAct;
   bool isErrorDate = false;
+  bool isButtonActive = true;
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -177,12 +182,14 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
                                       lastDate: DateTime(2023));
                                   setState(() {
                                     if (newDate != null &&
-                                        date!.isAfter(DateTime.now())) {
+                                        newDate.isAfter(DateTime.now())) {
                                       date = newDate;
                                       isErrorDate = false;
+                                      isButtonActive = true;
                                     } else {
                                       date = DateTime.now();
                                       isErrorDate = true;
+                                      isButtonActive = false;
                                     }
                                   });
                                 }),
@@ -243,17 +250,21 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
                       child: SizedBox(
                         height: 30,
                         width: 150,
-                        child: MaterialButton(
-                          color: const Color(0xFF00B0E8),
-                          elevation: 5.0,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: const Color(0xFF00B0E8)),
                           child: const Text(
                             'Agendar Cita',
                             style: TextStyle(color: Colors.white),
                           ),
-                          onPressed: () {
-                            ServiceCitaApi.agendarCita(citaAct, date.toString(),
-                                '${time!.hour}:${time!.minute}');
-                          },
+                          onPressed: isButtonActive
+                              ? () {
+                                  ServiceCitaApi.agendarCita(
+                                      citaAct,
+                                      date.toString(),
+                                      '${time!.hour}:${time!.minute}');
+                                }
+                              : null,
                         ),
                       ),
                     ),

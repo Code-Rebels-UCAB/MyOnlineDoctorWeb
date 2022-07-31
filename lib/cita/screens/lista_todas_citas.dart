@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myonlinedoctorweb/cita/infraestructura/modelo/CitaStream.dart';
 import 'package:myonlinedoctorweb/cita/infraestructura/servicios/citas_api.dart';
 import 'package:myonlinedoctorweb/cita/screens/widgets/campo_citas.dart';
 import 'package:myonlinedoctorweb/comun/screens/NavBar.dart';
@@ -15,6 +16,20 @@ class todasCitasLista extends StatefulWidget {
 }
 
 class _todasCitasListaState extends State<todasCitasLista> {
+  // Future<List<Cita>?> citasApi = ServiceCitaApi.getTodasCitas();
+  late Stream<List<Cita>?> listCitas;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    openCitaStream();
+  }
+
+  void openCitaStream() {
+    setState(() => listCitas = CitaStream.streamCitas());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,12 +40,12 @@ class _todasCitasListaState extends State<todasCitasLista> {
         backgroundColor: const Color(0xFF00B0E8),
       ),
       body: Container(
-        child: buildCitas(DateTime.now()),
+        child: buildCitas(),
       ),
     );
   }
 
-  Widget buildCitas(DateTime fechaHoy) {
+  Widget buildCitas() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -41,8 +56,8 @@ class _todasCitasListaState extends State<todasCitasLista> {
             child: Text("Todas las citas", style: TextStyle(fontSize: 28)),
           ),
         ),
-        FutureBuilder(
-          future: ServiceCitaApi.getTodasCitas(),
+        StreamBuilder(
+          stream: listCitas,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               switch (snapshot.connectionState) {
@@ -111,9 +126,45 @@ class _todasCitasListaState extends State<todasCitasLista> {
               ),
               onPressed: () {
                 ServiceCitaApi.suspenderCita(idCita);
+                _PopUpDone(context);
+                openCitaStream();
               }),
         ),
       ],
     );
+  }
+
+  _PopUpDone(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Center(child: Text('Cita suspendida exitosamente')),
+            content: SizedBox(
+              height: 150,
+              width: 400,
+              child: Expanded(
+                child: Column(
+                  children: [
+                    const Icon(
+                      Icons.check_circle,
+                      size: 70.0,
+                      color: Colors.greenAccent,
+                    ),
+                    const SizedBox(
+                      height: 35,
+                    ),
+                    ElevatedButton(
+                      child: const Text('Aceptar'),
+                      onPressed: () {
+                        Navigator.pop(context, true);
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 }

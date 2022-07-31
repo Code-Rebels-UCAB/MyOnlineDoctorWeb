@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../comun/environment.dart';
+import '../../../comun/enviroment.dart';
 import '../modelo/Cita.dart';
 
 class ServiceCitaApi {
