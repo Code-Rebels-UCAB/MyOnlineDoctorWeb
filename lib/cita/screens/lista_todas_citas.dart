@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myonlinedoctorweb/cita/infraestructura/modelo/CitaStream.dart';
 import 'package:myonlinedoctorweb/cita/infraestructura/servicios/citas_api.dart';
 import 'package:myonlinedoctorweb/cita/screens/widgets/campo_citas.dart';
+import 'package:myonlinedoctorweb/cita/screens/widgets/popUpDone.dart';
 import 'package:myonlinedoctorweb/comun/screens/NavBar.dart';
 
 import '../infraestructura/modelo/Cita.dart';
@@ -27,7 +28,7 @@ class _todasCitasListaState extends State<todasCitasLista> {
   }
 
   void openCitaStream() {
-    setState(() => listCitas = CitaStream.streamCitas());
+    setState(() => listCitas = CitaStream.streamTodasCitas());
   }
 
   @override
@@ -126,7 +127,7 @@ class _todasCitasListaState extends State<todasCitasLista> {
               ),
               onPressed: () {
                 ServiceCitaApi.suspenderCita(idCita);
-                _PopUpDone(context);
+                popUpDone(context, "Cita suspendida exitosamente");
                 openCitaStream();
               }),
         ),
@@ -134,37 +135,5 @@ class _todasCitasListaState extends State<todasCitasLista> {
     );
   }
 
-  _PopUpDone(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Center(child: Text('Cita suspendida exitosamente')),
-            content: SizedBox(
-              height: 150,
-              width: 400,
-              child: Expanded(
-                child: Column(
-                  children: [
-                    const Icon(
-                      Icons.check_circle,
-                      size: 70.0,
-                      color: Colors.greenAccent,
-                    ),
-                    const SizedBox(
-                      height: 35,
-                    ),
-                    ElevatedButton(
-                      child: const Text('Aceptar'),
-                      onPressed: () {
-                        Navigator.pop(context, true);
-                      },
-                    )
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
-  }
+  
 }

@@ -3,8 +3,8 @@ import 'package:myonlinedoctorweb/cita/infraestructura/modelo/Cita.dart';
 import 'package:myonlinedoctorweb/cita/infraestructura/modelo/CitaStream.dart';
 import 'package:myonlinedoctorweb/cita/infraestructura/servicios/citas_api.dart';
 import 'package:myonlinedoctorweb/cita/screens/widgets/campo_citas.dart';
+import 'package:myonlinedoctorweb/cita/screens/widgets/popUpDone.dart';
 import '../../comun/screens/NavBar.dart';
-import '../infraestructura/servicios/solicitudes_cita_api.dart';
 
 class citasSolicitadasLista extends StatefulWidget {
   @override
@@ -16,10 +16,21 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
   TimeOfDay? time =
       TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
   late String citaAct;
+  late Stream<List<Cita>?> listCitas;
   bool isErrorDate = false;
   bool isButtonActive = true;
 
-  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    openCitaStream();
+  }
+
+  void openCitaStream() {
+    setState(() => listCitas = CitaStream.streamCitasSolicitadas());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +58,7 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
           ),
         ),
         FutureBuilder(
-          future: ServiceCitaSolicitud.getCitasSolicitadas(),
+          future: ServiceCitaApi.getCitasSolicitadas(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               switch (snapshot.connectionState) {
@@ -113,7 +124,7 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
                 style: TextStyle(fontSize: 22),
               ),
               onPressed: () {
-                _PopUp(context, cita, date);
+                popUpSelect(context, cita, date);
                 setState(() {
                   citaAct = idCita;
                 });
@@ -123,7 +134,7 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
     );
   }
 
-  _PopUp(BuildContext context, dynamic cita, DateTime? date) {
+  popUpSelect(BuildContext context, dynamic cita, DateTime? date) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -263,6 +274,10 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
                                       citaAct,
                                       date.toString(),
                                       '${time!.hour}:${time!.minute}');
+                                  Navigator.pop(context, true);
+                                  popUpDone(
+                                      context, "Cita agendada exitosamente");
+                                  openCitaStream();
                                 }
                               : null,
                         ),
