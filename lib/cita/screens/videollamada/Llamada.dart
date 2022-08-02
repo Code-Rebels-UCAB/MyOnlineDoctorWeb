@@ -2,15 +2,13 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
+import 'package:myonlinedoctorweb/doctor/screens/llenar_registro_medico.dart';
 
 import 'package:provider/provider.dart';
 import '../../../comun/infraestructura/error_dialogo.dart';
 import '../../infraestructura/videollamada/modelo/cita_iniciada.dart';
 import '../../providers/cita_estado.dart';
 import '../../../comun/infraestructura/config.dart';
-
-
-
 
 class CallPage extends StatefulWidget {
   final ClientRole? role = ClientRole.Broadcaster;
@@ -38,7 +36,6 @@ class _CallPageState extends State<CallPage> {
 
   @override
   void dispose() {
-
     _users.clear();
     _engine.leaveChannel();
     _engine.destroy();
@@ -47,14 +44,11 @@ class _CallPageState extends State<CallPage> {
 
   Future<void> initialize() async {
     videollamadaCita = Provider.of<CitaEstado>(context, listen: false).cita;
-    if(appId.isEmpty){
+    if (appId.isEmpty) {
       setState(() {
-        _infoStrings.add(
-            'APP_ID missing, please provide your APP_ID in settings.dart'
-        );
-        _infoStrings.add(
-            'Agora Engine is not starting'
-        );
+        _infoStrings
+            .add('APP_ID missing, please provide your APP_ID in settings.dart');
+        _infoStrings.add('Agora Engine is not starting');
       });
       return;
     }
@@ -66,76 +60,61 @@ class _CallPageState extends State<CallPage> {
     VideoEncoderConfiguration configuration = VideoEncoderConfiguration();
     configuration.dimensions = VideoDimensions(width: 1920, height: 1080);
     await _engine.setVideoEncoderConfiguration(configuration);
-    await _engine.joinChannel(videollamadaCita!.videollamada.tokenTemp, videollamadaCita!.videollamada.nombreCanal, null, 0);
-
+    await _engine.joinChannel(videollamadaCita!.videollamada.tokenTemp,
+        videollamadaCita!.videollamada.nombreCanal, null, 0);
   }
 
   void _addAgoraEventHandlers() {
-    _engine.setEventHandler(RtcEngineEventHandler(
-        error: (code) {
-          setState(() {
-            final info = 'Error: $code';
-            _infoStrings.add(info);
-          });
-        },
-
-        joinChannelSuccess: (channel, uid, elapsed) {
-          setState(() {
-            final info = 'Join Channel: $channel, uid: $uid';
-            _infoStrings.add(info);
-          });
-        },
-
-        leaveChannel: (stats) {
-          setState(() {
-            _infoStrings.add('Leave Channel');
-            _users.clear();
-          });
-        },
-
-        userJoined: (uid, elapsed) {
-          setState(() {
-            final info = 'User Joined: $uid';
-            _infoStrings.add(info);
-            _users.add(uid);
-            _seUnio = false;
-          });
-        },
-
-        userOffline: (uid, elapsed){
-          setState(() {
-            final info = 'User offline: $uid';
-            _infoStrings.add(info);
-            _users.remove(uid);
-            _engine.leaveChannel();
-          });
-          cambiarStatusCita(videollamadaCita!.idCita);
-          Navigator.pop(context);
-        },
-
-        firstRemoteVideoFrame: (uid, width, height, elapsed) {
-          setState(() {
-            final info = 'First Remote video: $uid ${width} x $height';
-            _infoStrings.add(info);
-          });
-        }
-
-
-    ));
+    _engine.setEventHandler(RtcEngineEventHandler(error: (code) {
+      setState(() {
+        final info = 'Error: $code';
+        _infoStrings.add(info);
+      });
+    }, joinChannelSuccess: (channel, uid, elapsed) {
+      setState(() {
+        final info = 'Join Channel: $channel, uid: $uid';
+        _infoStrings.add(info);
+      });
+    }, leaveChannel: (stats) {
+      setState(() {
+        _infoStrings.add('Leave Channel');
+        _users.clear();
+      });
+    }, userJoined: (uid, elapsed) {
+      setState(() {
+        final info = 'User Joined: $uid';
+        _infoStrings.add(info);
+        _users.add(uid);
+        _seUnio = false;
+      });
+    }, userOffline: (uid, elapsed) {
+      setState(() {
+        final info = 'User offline: $uid';
+        _infoStrings.add(info);
+        _users.remove(uid);
+        _engine.leaveChannel();
+      });
+      cambiarStatusCita(videollamadaCita!.idCita);
+      Navigator.pop(context);
+    }, firstRemoteVideoFrame: (uid, width, height, elapsed) {
+      setState(() {
+        final info = 'First Remote video: $uid ${width} x $height';
+        _infoStrings.add(info);
+      });
+    }));
   }
 
   Widget _viewRows() {
     final List<StatefulWidget> list = [];
-    StatefulWidget? broadcaster =  null;
-    if(widget.role == ClientRole.Broadcaster) {
+    StatefulWidget? broadcaster = null;
+    if (widget.role == ClientRole.Broadcaster) {
       broadcaster = const rtc_local_view.SurfaceView();
     }
-    for (var uid in _users){
+    for (var uid in _users) {
       list.add(rtc_remote_view.SurfaceView(
         uid: uid,
-        channelId:  videollamadaCita!.videollamada.nombreCanal,
+        channelId: videollamadaCita!.videollamada.nombreCanal,
       ));
-
     }
     final views = list;
     return Stack(
@@ -143,10 +122,9 @@ class _CallPageState extends State<CallPage> {
         Column(
           children: List.generate(
               views.length,
-                  (index) => Expanded(
-                child: views[index],
-              )
-          ),
+              (index) => Expanded(
+                    child: views[index],
+                  )),
         ),
         Align(
           alignment: Alignment.topLeft,
@@ -154,19 +132,15 @@ class _CallPageState extends State<CallPage> {
             width: 220,
             height: 290,
             padding: const EdgeInsets.only(top: 30, left: 30),
-            child: Center(
-                child: broadcaster
-            ),
+            child: Center(child: broadcaster),
           ),
         ),
-
       ],
     );
   }
 
-
   Widget _toolbar() {
-    if(widget.role == ClientRole.Audience) return const SizedBox();
+    if (widget.role == ClientRole.Audience) return const SizedBox();
     return Container(
       alignment: Alignment.bottomCenter,
       padding: const EdgeInsets.symmetric(vertical: 48),
@@ -174,26 +148,29 @@ class _CallPageState extends State<CallPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           RawMaterialButton(
-            onPressed: (){
+            onPressed: () {
               setState(() {
                 muted = !muted;
               });
               _engine.muteLocalAudioStream(muted);
             },
             child: Icon(
-              muted ? Icons.mic_off: Icons.mic,
-              color: muted? Colors.white : Colors.lightBlueAccent,
+              muted ? Icons.mic_off : Icons.mic,
+              color: muted ? Colors.white : Colors.lightBlueAccent,
             ),
             shape: const CircleBorder(),
             elevation: 2.0,
-            fillColor: muted ? Colors.lightBlueAccent: Colors.white,
+            fillColor: muted ? Colors.lightBlueAccent : Colors.white,
             padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
             onPressed: () {
               cambiarStatusCita(videollamadaCita!.idCita);
               _engine.leaveChannel();
-              Navigator.pop(context);},
+              Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => RegistroMedico()));
+            },
             child: const Icon(
               Icons.call_end,
               color: Colors.white,
@@ -236,12 +213,13 @@ class _CallPageState extends State<CallPage> {
               child: ListView.builder(
                 reverse: true,
                 itemCount: _infoStrings.length,
-                itemBuilder: (BuildContext context , int index) {
-                  if(_infoStrings.isEmpty){
+                itemBuilder: (BuildContext context, int index) {
+                  if (_infoStrings.isEmpty) {
                     return const Text("Null");
                   }
                   return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -262,7 +240,6 @@ class _CallPageState extends State<CallPage> {
                               ),
                             ),
                           ),
-
                         ),
                       ],
                     ),
@@ -270,8 +247,7 @@ class _CallPageState extends State<CallPage> {
                 },
               ),
             ),
-          )
-      ),
+          )),
     );
   }
 
@@ -291,16 +267,14 @@ class _CallPageState extends State<CallPage> {
               });
             },
             icon: const Icon(Icons.info_outline),
-
           )
         ],
-
       ),
-     //backgroundColor: Colors.black,
+      //backgroundColor: Colors.black,
       body: Center(
         child: Stack(
           children: <Widget>[
-           _seUnio ? Center(child:Text('Llamando...')) : _viewRows(),
+            _seUnio ? Center(child: Text('Llamando...')) : _viewRows(),
             _panel(),
             _toolbar(),
           ],
@@ -311,10 +285,10 @@ class _CallPageState extends State<CallPage> {
 
   Future<void> cambiarStatusCita(String citaid) async {
     try {
-      await Provider.of<CitaEstado>(context, listen: false).enviarCitaDesdeFront(citaid);
-    }catch(e){
+      await Provider.of<CitaEstado>(context, listen: false)
+          .enviarCitaDesdeFront(citaid);
+    } catch (e) {
       ErrorDialog.showErrorDialog(e.toString(), context);
     }
-
   }
 }
