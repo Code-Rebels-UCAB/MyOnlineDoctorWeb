@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:myonlinedoctorweb/cita/screens/widgets/popUpDone.dart';
 import 'package:myonlinedoctorweb/comun/screens/NavBar.dart';
 import 'package:myonlinedoctorweb/doctor/screens/campo_registro.dart';
 import 'package:myonlinedoctorweb/registro_medico/infraestructura/modelo/registroMedico.dart';
@@ -86,8 +87,10 @@ class RegistroMedicoView extends StatelessWidget {
                                   );
                                   ServiceRegistroMedico.crearRegistroMed(
                                       registroNuevo);
+                                  Navigator.pop(context, true);
+                                  popUpDone(context,
+                                      "Registro Medico creado exitosamente");
                                 }
-                                Navigator.pop(context, true);
                               },
                               child: const Text('Crear Registro Medico')),
                         ),
