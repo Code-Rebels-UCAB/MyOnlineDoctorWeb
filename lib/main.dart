@@ -6,6 +6,7 @@ import 'package:myonlinedoctorweb/comun/infraestructura/autenticacion/puertos/au
 import 'package:myonlinedoctorweb/comun/infraestructura/autenticacion/storage/guardado_token_jwt.dart';
 import 'package:myonlinedoctorweb/doctor/infraestructura/servicios/iniciar_sesion_doctor_servicio.dart';
 import 'package:myonlinedoctorweb/doctor/screens/inciar_sesi%C3%B3n_doctor.dart';
+import 'package:myonlinedoctorweb/registro_medico/provider/MedicalProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:myonlinedoctorweb/comun/screens/Bienvenido.dart';
 
@@ -17,7 +18,8 @@ void main() {
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_)=> CitaEstado(request: LlamadaRequest())),
-          ChangeNotifierProvider(create: (_) => IniciarSesionEstado(IniciarSesionDoctorServicio(AuthService(authToken: GuardadoTokenJwt() ))))
+          ChangeNotifierProvider(create: (_) => IniciarSesionEstado(IniciarSesionDoctorServicio(AuthService(authToken: GuardadoTokenJwt() )))),
+          Provider(create: (context) => MedicalRecordProvider()),
         ],
         child: MyApp()
   ));
