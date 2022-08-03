@@ -4,6 +4,8 @@ import 'package:myonlinedoctorweb/registro_medico/infraestructura/modelo/registr
 
 import '../../../comun/enviroment.dart';
 import '../../../comun/environment.dart';
+import '../../../comun/infraestructura/autenticacion/auth_service.dart';
+import '../../../comun/infraestructura/autenticacion/storage/guardado_token_jwt.dart';
 
 class ServiceRegistroMedico {
   static String urlLocal = SERVER_API;
@@ -39,9 +41,10 @@ class ServiceRegistroMedico {
   }
 
   static Future<List<RegistroMedico>?> crearRegistroMed(RegistroMedico nuevoRegistro) async {
-    var headers = {'Content-Type': 'application/json'};
+    final token = await AuthService(authToken: GuardadoTokenJwt()).leerToken();
+    var headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'};
     var request = http.Request(
-        'POST', Uri.parse('http://localhost:3000/api/registroMedico/crear'));
+        'POST', Uri.parse(urlLocal + '/api/registroMedico/crear'));
     request.body = json.encode({
       "IdCita": nuevoRegistro.idCita,
       "IdDoctor": nuevoRegistro.idDoctor,

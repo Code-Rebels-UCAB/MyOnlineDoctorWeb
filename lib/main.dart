@@ -18,7 +18,7 @@ void main() {
   runApp(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_)=> CitaEstado(request: LlamadaRequest())),
+          ChangeNotifierProvider(create: (_)=> CitaEstado(request: LlamadaRequest(AuthService(authToken: GuardadoTokenJwt())))),
           ChangeNotifierProvider(create: (_) => IniciarSesionEstado(DoctorServicio(AuthService(authToken: GuardadoTokenJwt())))),
           Provider(create: (context) => MedicalRecordProvider()),
           ChangeNotifierProvider(create: (_) => DatosDoctorEstado(DoctorServicio(AuthService(authToken: GuardadoTokenJwt())))),
