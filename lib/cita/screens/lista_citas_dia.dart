@@ -121,7 +121,9 @@ class _citasDiaListaState extends State<citasDiaLista> {
                 if (citaId != null) {
                   onJoin(citaId);
                   //Id Estatico de Doctor hasta que se cree el login
-                  Provider.of<MedicalRecordProvider>(context, listen: false).setMedicalRecord(citaId,"dd2d571a-aadf-4213-a81f-ade5f5e89893");
+                  Provider.of<MedicalRecordProvider>(context, listen: false)
+                      .setMedicalRecord(
+                          citaId, "dd2d571a-aadf-4213-a81f-ade5f5e89893");
                 }
               }),
         ),
