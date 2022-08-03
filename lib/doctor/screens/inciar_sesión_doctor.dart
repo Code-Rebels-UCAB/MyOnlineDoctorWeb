@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myonlinedoctorweb/comun/screens/Bienvenido.dart';
-import 'package:myonlinedoctorweb/doctor/infraestructura/servicios/iniciar_sesion_doctor_servicio.dart';
+import 'package:myonlinedoctorweb/doctor/infraestructura/servicios/doctor_servicio.dart';
 import 'package:provider/provider.dart';
 
 import '../../comun/infraestructura/cuadro_advertencia.dart';
@@ -35,7 +35,6 @@ class _iniciarSesionState extends State<IniciarSesion> {
         ),
       );
     }catch(e){
-      print(e);
       showDialog(
         context: context,
         builder: (BuildContext context) {

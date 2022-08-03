@@ -1,9 +1,34 @@
+
 import 'package:flutter/material.dart';
 import 'package:myonlinedoctorweb/comun/screens/NavBar.dart';
+import 'package:myonlinedoctorweb/doctor/providers/datos_doctor_estado.dart';
+import 'package:provider/provider.dart';
 
 
-class Bienvenido extends StatelessWidget {
+class Bienvenido extends StatefulWidget {
   const Bienvenido({Key? key}) : super(key: key);
+
+  @override
+  State<Bienvenido> createState() => _BienvenidoState();
+}
+
+class _BienvenidoState extends State<Bienvenido> {
+  bool _isLoading = false;
+
+  void obtenerDatosDoctor() async {
+    setState((){
+      _isLoading = true;
+    });
+    try {
+      await Provider.of<DatosDoctorEstado>(context, listen: false).datosDoctorPerfil();
+    }catch(e){
+      throw Exception('No se pudo obtener los datos');
+    } finally {
+      setState((){
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

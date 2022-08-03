@@ -13,12 +13,9 @@ class IniciarSesionEstado with ChangeNotifier {
 
   Future<void> iniciarSesion(IniciarSesionDoctorModelo credenciales) async{
     try{
-      print('pase');
       final response = await request.iniciarSesionDoctorRequest(credenciales);
-      print(response);
       notifyListeners();
     }catch(e){
-      print('no pase');
       throw Exception("Algo Salio mal");
     }
   }

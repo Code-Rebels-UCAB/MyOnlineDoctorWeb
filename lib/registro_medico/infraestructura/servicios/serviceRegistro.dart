@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:myonlinedoctorweb/registro_medico/infraestructura/modelo/registroMedico.dart';
 
 import '../../../comun/enviroment.dart';
+import '../../../comun/environment.dart';
 
 class ServiceRegistroMedico {
   static String urlLocal = SERVER_API;
