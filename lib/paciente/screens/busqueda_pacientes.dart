@@ -214,7 +214,7 @@ class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
         // Cuando se de un cambio de estado en el TextField, reconstruye
         onChanged: (text) {
           setState(() {
-            listOfDoctors = doctorService.getDoctors(
+            doctorService.getDoctors(
                 _dropdownSelectedFilterItem, _textFieldFilter.text);
             //futureDoctorTask(text, _dropdownSelectedFilterItem);
           });
