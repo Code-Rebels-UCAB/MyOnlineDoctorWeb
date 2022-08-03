@@ -1,8 +1,10 @@
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../modelos/token_jwt.dart';
+import '../puertos/auth_service_abstract.dart';
 
-class GuardadoTokenJwt {
+class GuardadoTokenJwt implements AuthServiceAbstract {
+
   final _almacenamiento = const FlutterSecureStorage();
 
   Future<void> escribirDataToken(TokenJwtModelo token) async {
@@ -16,5 +18,13 @@ class GuardadoTokenJwt {
 
   Future<String> leerToken() async {
     return await _almacenamiento.read(key: 'token') as String;
+  }
+
+  Future<bool> tieneToken() async {
+    String? token = await GuardadoTokenJwt().leerToken();
+    if (token != null) {
+      return true;
+    }
+    return false;
   }
 }

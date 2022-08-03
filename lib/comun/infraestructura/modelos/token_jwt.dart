@@ -9,7 +9,7 @@ class TokenJwtModelo {
 
   factory TokenJwtModelo.fromJson(Map<String, dynamic> json){
     return TokenJwtModelo(
-      token: json['tokenDeAcceso'],
+      token: json['token'],
     );
   }
 }
