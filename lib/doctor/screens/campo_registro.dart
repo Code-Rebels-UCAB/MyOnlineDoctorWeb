@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class CampoRegistro extends StatelessWidget {
   String header;
-
-  CampoRegistro({Key? key, required this.header}) : super(key: key);
+  List<String> listData;
+  CampoRegistro({Key? key, required this.header, required this.listData})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,16 @@ class CampoRegistro extends StatelessWidget {
               border: OutlineInputBorder(),
               hintText: 'Rellena este apartado...',
             ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Campo Obligatorio';
+              } else {
+                return null;
+              }
+            },
+            onSaved: (value) {
+              listData.add(value!);
+            },
             minLines: 4,
             keyboardType: TextInputType.multiline,
             maxLines: null,

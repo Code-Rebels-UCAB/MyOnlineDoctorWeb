@@ -5,6 +5,7 @@ import 'package:myonlinedoctorweb/cita/infraestructura/servicios/citas_api.dart'
 import 'package:myonlinedoctorweb/cita/screens/widgets/campo_citas.dart';
 import 'package:myonlinedoctorweb/cita/screens/videollamada/Llamada.dart';
 import 'package:myonlinedoctorweb/comun/screens/NavBar.dart';
+import 'package:myonlinedoctorweb/registro_medico/provider/MedicalProvider.dart';
 import 'package:provider/provider.dart';
 import '../../comun/infraestructura/error_dialogo.dart';
 import '../providers/cita_estado.dart';
@@ -119,6 +120,8 @@ class _citasDiaListaState extends State<citasDiaLista> {
               onPressed: () {
                 if (citaId != null) {
                   onJoin(citaId);
+                  //Id Estatico de Doctor hasta que se cree el login
+                  Provider.of<MedicalRecordProvider>(context, listen: false).setMedicalRecord(citaId,"dd2d571a-aadf-4213-a81f-ade5f5e89893");
                 }
               }),
         ),

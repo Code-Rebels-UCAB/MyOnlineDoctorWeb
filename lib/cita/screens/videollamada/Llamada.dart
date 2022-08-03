@@ -168,8 +168,10 @@ class _CallPageState extends State<CallPage> {
               cambiarStatusCita(videollamadaCita!.idCita);
               _engine.leaveChannel();
               Navigator.pop(context);
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => RegistroMedico()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => RegistroMedicoView()));
             },
             child: const Icon(
               Icons.call_end,

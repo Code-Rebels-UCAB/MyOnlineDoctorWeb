@@ -4,7 +4,6 @@ import 'package:myonlinedoctorweb/cita/screens/lista_citas_solicitadas.dart';
 import 'package:myonlinedoctorweb/comun/screens/Bienvenido.dart';
 import 'package:myonlinedoctorweb/doctor/screens/llenar_registro_medico.dart';
 
-
 class NavBar extends StatelessWidget {
   const NavBar({Key? key}) : super(key: key);
 
@@ -62,7 +61,7 @@ class NavBar extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => RegistroMedico()));
+                      builder: (context) => RegistroMedicoView()));
             },
           ),
           ListTile(
