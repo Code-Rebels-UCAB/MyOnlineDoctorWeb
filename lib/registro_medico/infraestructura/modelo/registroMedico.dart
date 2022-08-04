@@ -22,7 +22,8 @@ class ServicioRegistroMed {
   factory ServicioRegistroMed.fromJson(Map<String, dynamic> json) =>
       ServicioRegistroMed(
         esExitoso: json["esExitoso"],
-        valor: List<RegistroMedico>.from(json["valor"].map((x) => RegistroMedico.fromJson(x))),
+        valor: List<RegistroMedico>.from(
+            json["valor"].map((x) => RegistroMedico.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -57,7 +58,7 @@ class RegistroMedico {
   String plan;
   String diagnostico;
   String? motivo;
-  DateTime? fechaCita;
+  String? fechaCita;
   String? modalidad;
   String idDoctor;
   String? nombreDoctor;
@@ -74,7 +75,7 @@ class RegistroMedico {
         plan: json["plan"],
         diagnostico: json["diagnostico"],
         motivo: json["motivo"],
-        fechaCita: DateTime.parse(json["fechaCita"]),
+        fechaCita: json["fechaCita"],
         modalidad: json["modalidad"],
         idDoctor: json["id_doctor"],
         nombreDoctor: json["nombreDoctor"],
@@ -92,8 +93,7 @@ class RegistroMedico {
         "plan": plan,
         "diagnostico": diagnostico,
         "motivo": motivo,
-        "fechaCita":
-            "${fechaCita!.year.toString().padLeft(4, '0')}-${fechaCita!.month.toString().padLeft(2, '0')}-${fechaCita!.day.toString().padLeft(2, '0')}",
+        "fechaCita": fechaCita,
         "modalidad": modalidad,
         "id_doctor": idDoctor,
         "nombreDoctor": nombreDoctor,

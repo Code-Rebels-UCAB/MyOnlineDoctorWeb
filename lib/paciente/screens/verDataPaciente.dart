@@ -76,7 +76,7 @@ class _DataPacienteState extends State<DataPaciente> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 160.0,
                       ),
                       Column(
