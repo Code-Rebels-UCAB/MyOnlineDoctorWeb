@@ -1,8 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:myonlinedoctorweb/comun/infraestructura/autenticacion/auth_service.dart';
+import 'package:myonlinedoctorweb/comun/infraestructura/autenticacion/storage/guardado_token_jwt.dart';
 
 import '../../../comun/enviroment.dart';
+import '../../../comun/environment.dart';
+import '../../../comun/infraestructura/autenticacion/puertos/auth_service_abstract.dart';
 import '../modelo/Cita.dart';
 
 class ServiceCitaApi {
@@ -10,12 +14,18 @@ class ServiceCitaApi {
 
   static String urlLocal = SERVER_API;
 
+
   static Future<List<Cita>?> getTodasCitas() async {
+    final token = await AuthService(authToken: GuardadoTokenJwt()).leerToken();
     final url = Uri.parse(
-        urlLocal + '/api/cita/getcitasdoctor/dd2d571a-aadf-4213-a81f-ade5f5e89893');
+        urlLocal + '/api/cita/getcitasdoctor');
     final http.Response response;
     try {
-      response = await http.get(url);
+      response = await http.get(url,
+        headers:{
+          "Content-type": "application/json",
+          'Authorization': 'Bearer $token',
+        },);
     } catch (e) {
       // throw Exception('El servidor esta inactivo - ServerDown');
       print(e);
@@ -40,11 +50,16 @@ class ServiceCitaApi {
   }
 
   static Future<List<Cita>?> getCitasDia() async {
+    final token = await AuthService(authToken: GuardadoTokenJwt()).leerToken();
     final url = Uri.parse(
-        urlLocal + '/api/cita/citasAlDiadoctor/dd2d571a-aadf-4213-a81f-ade5f5e89893');
+        urlLocal + '/api/cita/citasAlDiadoctor');
     final http.Response response;
     try {
-      response = await http.get(url);
+      response = await http.get(url,
+        headers:{
+          "Content-type": "application/json",
+          'Authorization': 'Bearer $token',
+        },);
     } catch (e) {
       // throw Exception('El servidor esta inactivo - ServerDown');
       print(e);
@@ -69,11 +84,16 @@ class ServiceCitaApi {
   }
 
   static Future<List<Cita>?> getCitasSolicitadas() async {
+    final token = await AuthService(authToken: GuardadoTokenJwt()).leerToken();
     final url = Uri.parse(
-        '${SERVER_API}/api/cita/getsolicitudesdoctor/dd2d571a-aadf-4213-a81f-ade5f5e89893');
+        '${SERVER_API}/api/cita/getsolicitudesdoctor');
     final http.Response response;
     try {
-      response = await http.get(url);
+      response = await http.get(url,
+        headers:{
+          "Content-type": "application/json",
+          'Authorization': 'Bearer $token',
+        },);
     } catch (e) {
       // throw Exception('El servidor esta inactivo - ServerDown');
       print(e);
@@ -99,7 +119,8 @@ class ServiceCitaApi {
 
   static Future<void> agendarCita(
       String idCita, String fecha, String? hora) async {
-    var headers = {'Content-Type': 'application/json'};
+    final token = await AuthService(authToken: GuardadoTokenJwt()).leerToken();
+    var headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'};
     var request = http.Request('PUT',
         Uri.parse(urlLocal + '/api/cita/putagendarcita/$idCita'));
     request.body = json.encode({
@@ -120,7 +141,8 @@ class ServiceCitaApi {
   }
 
   static Future<void> suspenderCita(String idCita) async {
-    var headers = {'Content-Type': 'application/json'};
+    final token = await AuthService(authToken: GuardadoTokenJwt()).leerToken();
+    var headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'};
     var request = http.Request(
         'PUT',
         Uri.parse(

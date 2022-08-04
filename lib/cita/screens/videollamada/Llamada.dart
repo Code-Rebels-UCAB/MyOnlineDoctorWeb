@@ -70,24 +70,28 @@ class _CallPageState extends State<CallPage> {
         final info = 'Error: $code';
         _infoStrings.add(info);
       });
-    }, joinChannelSuccess: (channel, uid, elapsed) {
+      },
+        joinChannelSuccess: (channel, uid, elapsed) {
       setState(() {
         final info = 'Join Channel: $channel, uid: $uid';
         _infoStrings.add(info);
       });
-    }, leaveChannel: (stats) {
+      },
+        leaveChannel: (stats) {
       setState(() {
         _infoStrings.add('Leave Channel');
         _users.clear();
       });
-    }, userJoined: (uid, elapsed) {
+      },
+        userJoined: (uid, elapsed) {
       setState(() {
         final info = 'User Joined: $uid';
         _infoStrings.add(info);
         _users.add(uid);
         _seUnio = false;
       });
-    }, userOffline: (uid, elapsed) {
+      },
+        userOffline: (uid, elapsed) {
       setState(() {
         final info = 'User offline: $uid';
         _infoStrings.add(info);
@@ -95,8 +99,12 @@ class _CallPageState extends State<CallPage> {
         _engine.leaveChannel();
       });
       cambiarStatusCita(videollamadaCita!.idCita);
-      Navigator.pop(context);
-    }, firstRemoteVideoFrame: (uid, width, height, elapsed) {
+      Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RegistroMedicoView()));
+      },
+        firstRemoteVideoFrame: (uid, width, height, elapsed) {
       setState(() {
         final info = 'First Remote video: $uid ${width} x $height';
         _infoStrings.add(info);
@@ -167,8 +175,7 @@ class _CallPageState extends State<CallPage> {
             onPressed: () {
               cambiarStatusCita(videollamadaCita!.idCita);
               _engine.leaveChannel();
-              Navigator.pop(context);
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => RegistroMedicoView()));
