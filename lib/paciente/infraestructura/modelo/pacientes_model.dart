@@ -1,19 +1,19 @@
 class PacienteModel {
-  final String idPaciente;
-  final String p_nombre;
-  final String s_nombre;
-  final String p_apellido;
-  final String s_apellido;
-  final String sexo;
-  final String altura;
-  final String peso;
-  final String telefono;
-  final String antecedentes;
-  final String operacion;
-  final String status_suscripcion;
-  final String alergia;
-  final String correo;
-  final dynamic fecha_nacimiento;
+  final String? idPaciente;
+  final String? p_nombre;
+  final String? s_nombre;
+  final String? p_apellido;
+  final String? s_apellido;
+  final String? sexo;
+  final String? altura;
+  final String? peso;
+  final String? telefono;
+  final String? antecedentes;
+  final String? operacion;
+  final String? status_suscripcion;
+  final String? alergia;
+  final String? correo;
+  final dynamic? fecha_nacimiento;
 
   PacienteModel({
     required this.idPaciente,

@@ -156,10 +156,6 @@ class _SearchPacienteScreenState extends State<SearchPacienteScreen> {
               _dropdownSelectedFilterItem = newValue;
               if (_dropdownSelectedFilterItem == ' ') {
                 _searchBarEnable = false;
-              } else if (_dropdownSelectedFilterItem == 'Top Doctores') {
-                _searchBarEnable = false;
-                listOfPacientes = pacienteService.getPacientes(
-                    _dropdownSelectedFilterItem, _textFieldFilter.text);
               } else {
                 _searchBarEnable = true;
               }
@@ -212,7 +208,6 @@ class _SearchPacienteScreenState extends State<SearchPacienteScreen> {
           setState(() {
             listOfPacientes = pacienteService.getPacientes(
                 _dropdownSelectedFilterItem, _textFieldFilter.text);
-            //futureDoctorTask(text, _dropdownSelectedFilterItem);
           });
         },
       ),
@@ -256,26 +251,29 @@ class _SearchPacienteScreenState extends State<SearchPacienteScreen> {
   }
 
   Widget _PacienteItem(
-      String idPaciente,
-      String p_nombre,
-      String s_nombre,
-      String p_apellido,
-      String s_apellido,
-      String sexo,
-      String altura,
-      String peso,
-      String telefono,
-      String antecedentes,
-      String operacion,
-      String status_suscripcion,
-      String alergia,
-      String correo,
-      String fecha_nacimiento) {
-    String sexoAux = sexo == 'M' ? "Sexo: Masculino" : "Sexo: Femenino";
+      String? idPaciente,
+      String? p_nombre,
+      String? s_nombre,
+      String? p_apellido,
+      String? s_apellido,
+      String? sexo,
+      String? altura,
+      String? peso,
+      String? telefono,
+      String? antecedentes,
+      String? operacion,
+      String? status_suscripcion,
+      String? alergia,
+      String? correo,
+      String? fecha_nacimiento) {
+    String? sexoAux = sexo == 'M' ? "Sexo: Masculino" : "Sexo: Femenino";
     return ListTile(
-        title: Text(p_nombre + ' ' + p_apellido),
-        subtitle: Text(
-            sexoAux + ' ' + 'Correo: $correo' + ' ' + 'Telefono: $telefono'));
+        title: Text(p_nombre! + ' ' + p_apellido!),
+        subtitle: Text(sexoAux +
+            '     ' +
+            'Correo:   $correo' +
+            '     ' +
+            'Telefono:   $telefono'));
   }
 
   // Verifica la cantidad de especialidades del medico
