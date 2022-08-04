@@ -47,9 +47,9 @@ class FirstPage extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-      initialRoute: 'iniciarsesion',
+      initialRoute: 'myonlinedoctor',
       routes: {
-        'iniciarsesion': (context) => IniciarSesion(),
+        'myonlinedoctor': (context) => IniciarSesion(),
       },
     );
   }
