@@ -122,21 +122,7 @@ class _todasregistrosListaState extends State<todasregistrosLista> {
                 popUpRegistro(context, '', registro);
               }),
         ),
-        const SizedBox(
-          width: 30.0,
-        ),
-        SizedBox(
-          height: 50.0,
-          child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Color.fromARGB(255, 232, 107, 18),
-              ),
-              child: const Text(
-                'editar',
-                style: TextStyle(fontSize: 22),
-              ),
-              onPressed: () {}),
-        ),
+       
       ],
     );
   }
