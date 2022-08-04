@@ -13,7 +13,7 @@ class SearchDoctorScreen extends StatefulWidget {
 }
 
 class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
-  DoctorService doctorService = DoctorService();
+  PacienteService doctorService = PacienteService();
   dynamic listOfDoctors;
   // ignore: prefer_final_fields
   TextEditingController _textFieldFilter = TextEditingController();
@@ -312,7 +312,7 @@ class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
   }
 
   Widget _mostrarBoton(
-      BuildContext context, String idDoctor, DoctorService doctorService) {
+      BuildContext context, String idDoctor, PacienteService doctorService) {
     return SizedBox(
       height: 50.0,
       child: ElevatedButton(
@@ -324,7 +324,7 @@ class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
             style: TextStyle(fontSize: 22),
           ),
           onPressed: () {
-            DoctorService.bloquearDoctor(idDoctor);
+            PacienteService.bloquearDoctor(idDoctor);
             popUpDone(context, "Doctor Bloqueado Exitosamente");
             setState(() {
               listOfDoctors = doctorService.getDoctors(

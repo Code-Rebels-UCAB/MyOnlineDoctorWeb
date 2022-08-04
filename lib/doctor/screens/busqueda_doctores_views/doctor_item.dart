@@ -34,7 +34,7 @@ class DoctorItem extends StatefulWidget {
 }
 
 class _DoctorItemState extends State<DoctorItem> {
-  DoctorService doctorService = DoctorService();
+  PacienteService doctorService = PacienteService();
   // ListTile de cada doctor
   @override
   Widget build(BuildContext context) {
@@ -104,8 +104,8 @@ String verifySpecialty(dynamic specialtyList) {
   }
 }
 
-Widget _mostrarBoton(
-    BuildContext context, String idDoctor, DoctorService doctorService, dynamic dropDownSelected, String criterio) {
+Widget _mostrarBoton(BuildContext context, String idDoctor,
+    PacienteService doctorService, dynamic dropDownSelected, String criterio) {
   return SizedBox(
     height: 50.0,
     child: ElevatedButton(
@@ -117,7 +117,7 @@ Widget _mostrarBoton(
           style: TextStyle(fontSize: 22),
         ),
         onPressed: () {
-          DoctorService.bloquearDoctor(idDoctor);
+          PacienteService.bloquearDoctor(idDoctor);
           popUpDone(context, "Doctor Bloqueado Exitosamente");
           doctorService.getDoctors(dropDownSelected, criterio);
         }),

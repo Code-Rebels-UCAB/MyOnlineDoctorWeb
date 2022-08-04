@@ -87,13 +87,23 @@ class _citasDiaListaState extends State<citasDiaLista> {
                       children: [
                         Expanded(
                           child: CampoCita(
-                              dato: cita.paciente.pNombre +
-                                  ' ' +
-                                  cita.paciente.pApellido),
+                            dato: cita.paciente.pNombre +
+                                ' ' +
+                                cita.paciente.pApellido,
+                            size: 300.0,
+                          ),
                         ),
-                        Expanded(child: CampoCita(dato: cita.horacita)),
-                        Expanded(child: CampoCita(dato: cita.modalidad)),
-                        Expanded(child: CampoCita(dato: cita.statuscita)),
+                        Expanded(
+                            child: CampoCita(
+                          dato: cita.horacita,
+                          size: 300.0,
+                        )),
+                        Expanded(
+                            child:
+                                CampoCita(dato: cita.modalidad, size: 300.0)),
+                        Expanded(
+                            child:
+                                CampoCita(dato: cita.statuscita, size: 300.0)),
                         if (cita.statuscita == "Aceptada")
                           _mostrarBotones(cita.idCita)
                       ],

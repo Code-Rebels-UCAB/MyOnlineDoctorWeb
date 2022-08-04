@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class CampoCita extends StatelessWidget {
+class CampoPaciente extends StatelessWidget {
   String? dato;
   double size;
 
-  CampoCita({Key? key, required this.dato, required this.size})
+  CampoPaciente({Key? key, required this.dato, required this.size})
       : super(key: key);
 
   @override
@@ -15,7 +15,7 @@ class CampoCita extends StatelessWidget {
           color: Colors.black,
           child: Text(
             dato ?? '-',
-            style: const TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 10),
           )),
     );
   }
