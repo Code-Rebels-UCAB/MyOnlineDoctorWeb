@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:myonlinedoctorweb/doctor/infraestructura/models/doctors_model.dart';
 
-class PacienteService {
+class DoctorService {
   static String urlLocal = SERVER_API;
   Future<List<dynamic>> getDoctors(
       String dropdownFilter, String searchValue) async {
