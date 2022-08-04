@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myonlinedoctorweb/cita/screens/citas_dashboard.dart';
 import 'package:myonlinedoctorweb/cita/screens/lista_citas_solicitadas.dart';
 import 'package:myonlinedoctorweb/comun/screens/Bienvenido.dart';
+import 'package:myonlinedoctorweb/doctor/screens/busqueda_doctores_views/busqueda_doctores.dart';
 import 'package:myonlinedoctorweb/doctor/screens/llenar_registro_medico.dart';
 
 class NavBar extends StatelessWidget {
@@ -80,7 +81,12 @@ class NavBar extends StatelessWidget {
                 const Icon(Icons.health_and_safety, color: Color(0xFF94C6F2)),
             title: const Text('Doctores',
                 style: TextStyle(color: Color(0xFF94C6F2))),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SearchDoctorScreen()));
+            },
           ),
           ListTile(
             leading:
