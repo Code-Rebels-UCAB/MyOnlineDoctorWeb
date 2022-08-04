@@ -19,8 +19,7 @@ class PacienteService {
       response = await http.get(Uri.parse(
           urlLocal + "/api/paciente/filtrar/telefono?telefono=$searchValue"));
     } else {
-      response =
-          await http.get(Uri.parse(urlLocal + "/api/paciente/todos"));
+      response = await http.get(Uri.parse(urlLocal + "/api/paciente/todos"));
     }
 
     var jsonResponse = jsonDecode(response.body);
@@ -29,4 +28,29 @@ class PacienteService {
         .toList();
   }
 
+  static Future<void> suspenderPaciente(String idPaciente) async {
+    var request = http.Request(
+        'PUT', Uri.parse(urlLocal + '/api/paciente/suspender?id=$idPaciente'));
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
+
+  static Future<void> bloquearPaciente(String idPaciente) async {
+    var request = http.Request(
+        'PUT', Uri.parse(urlLocal + '/api/paciente/bloquear?id=$idPaciente'));
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
 }

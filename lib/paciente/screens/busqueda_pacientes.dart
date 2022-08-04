@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:myonlinedoctorweb/cita/screens/widgets/campo_citas.dart';
+import 'package:myonlinedoctorweb/cita/screens/widgets/popUpDone.dart';
 import 'package:myonlinedoctorweb/comun/screens/NavBar.dart';
 import 'package:myonlinedoctorweb/paciente/infraestructura/modelo/pacientes_model.dart';
 import 'package:myonlinedoctorweb/paciente/infraestructura/servicios/paciente_service.dart';
+import 'package:myonlinedoctorweb/paciente/provider/pacienteProvider.dart';
+import 'package:myonlinedoctorweb/paciente/screens/verDataPaciente.dart';
+import 'package:myonlinedoctorweb/paciente/screens/widgets/campo_pacientes.dart';
+import 'package:provider/provider.dart';
 
 class SearchPacienteScreen extends StatefulWidget {
   const SearchPacienteScreen({Key? key}) : super(key: key);
@@ -229,75 +235,180 @@ class _SearchPacienteScreenState extends State<SearchPacienteScreen> {
   }
 
   Widget ListaPacientes(PacienteModel item) {
+    Provider.of<PacienteProvider>(context, listen: false)
+        .setPacienteProvider(item);
     return Container(
       // Se agrega la lista de Widgets, cada uno con la informacion de un doctor
       child: _PacienteItem(
-          item.idPaciente,
-          item.p_nombre,
-          item.s_nombre,
-          item.p_apellido,
-          item.s_apellido,
-          item.sexo,
-          item.altura,
-          item.peso,
-          item.telefono,
-          item.antecedentes,
-          item.operacion,
-          item.status_suscripcion,
-          item.alergia,
-          item.correo,
-          item.fecha_nacimiento),
+          Provider.of<PacienteProvider>(context, listen: false).paciente),
     );
   }
 
-  Widget _PacienteItem(
-      String? idPaciente,
-      String? p_nombre,
-      String? s_nombre,
-      String? p_apellido,
-      String? s_apellido,
-      String? sexo,
-      String? altura,
-      String? peso,
-      String? telefono,
-      String? antecedentes,
-      String? operacion,
-      String? status_suscripcion,
-      String? alergia,
-      String? correo,
-      String? fecha_nacimiento) {
-    String? sexoAux = sexo == 'M' ? "Sexo: Masculino" : "Sexo: Femenino";
-    return ListTile(
-        title: Text(p_nombre! + ' ' + p_apellido!),
-        subtitle: Text(sexoAux +
-            '     ' +
-            'Correo:   $correo' +
-            '     ' +
-            'Telefono:   $telefono'));
+  Widget _PacienteItem(PacienteModel pacienT) {
+    String? sexoAux =
+        pacienT.sexo == 'M' ? "Sexo: Masculino" : "Sexo: Femenino";
+    return Card(
+        child: Container(
+      padding: const EdgeInsets.all(50.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          CampoCita(
+              dato: pacienT.p_nombre! + ' ' + pacienT.p_apellido!, size: 200.0),
+          CampoCita(dato: sexoAux, size: 200.0),
+          CampoCita(dato: 'Telefono:   ${pacienT.telefono}', size: 200.0),
+          CampoCita(dato: 'Correo:   ${pacienT.correo}', size: 300.0),
+          const SizedBox(
+            width: 50.0,
+          ),
+          _mostrarBotones1(pacienT),
+        ],
+        // child: Row(
+        //   mainAxisAlignment: MainAxisAlignment.start,
+        //   children: [
+        //     CampoCita(
+        //       dato: p_nombre! + ' ' + p_apellido!,
+        //       size: 10.0,
+        //     ),
+        //     CampoCita(
+        //       dato: sexoAux,
+        //       size: 10.0,
+        //     ),
+        //     CampoCita(
+        //       dato: 'Correo:   $correo',
+        //       size: 10.0,
+        //     ),
+        //     CampoCita(
+        //       dato: 'Telefono:   $telefono',
+        //       size: 10.0,
+        //     )
+        //   ],
+      ),
+    ));
   }
 
   // Verifica la cantidad de especialidades del medico
 
-  // Widget _mostrarBoton(
-  //     BuildContext context, String idDoctor, PacienteService doctorService) {
-  //   return SizedBox(
-  //     height: 50.0,
-  //     child: ElevatedButton(
-  //         style: ElevatedButton.styleFrom(
-  //           primary: Color.fromARGB(255, 255, 0, 0),
-  //         ),
-  //         child: const Text(
-  //           'Bloquear',
-  //           style: TextStyle(fontSize: 22),
-  //         ),
-  //         onPressed: () {
-  //           PacienteService.bloquearDoctor(idDoctor);
-  //           popUpDone(context, "Doctor Bloqueado Exitosamente");
-  //           setState(() {
-  //             listOfPacientes = pacienteService.getPacientes(
-  //                 _dropdownSelectedFilterItem, _textFieldFilter.text);
-  //           });
-  //         }),
-  //   );
-  // }
+  Widget _mostrarBotones1(PacienteModel pacienT) {
+    return Row(
+      children: [
+        SizedBox(
+          height: 50.0,
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: const Color.fromARGB(255, 15, 214, 18),
+              ),
+              child: const Text(
+                'Ver Informacion',
+                style: TextStyle(fontSize: 16),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DataPaciente(
+                              pacienT: pacienT,
+                            )));
+              }),
+        ),
+        const SizedBox(
+          width: 30.0,
+        ),
+        SizedBox(
+          height: 50.0,
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color.fromARGB(255, 0, 136, 255),
+              ),
+              child: const Text(
+                'Ver Historia Medica',
+                style: TextStyle(fontSize: 16),
+              ),
+              onPressed: () {}),
+        ),
+        const SizedBox(
+          width: 30.0,
+        ),
+        if (pacienT.status_suscripcion == "Activo" ||
+            pacienT.status_suscripcion == "Atrasado")
+          mostrarBotonSuspender(pacienT),
+        if (pacienT.status_suscripcion == "Suspendido")
+          const Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 30.0, 0),
+            child: Text('Suspendido',
+                style: TextStyle(color: Colors.orangeAccent)),
+          ),
+        if (pacienT.status_suscripcion == "Activo" ||
+            pacienT.status_suscripcion == "Suspendido" ||
+            pacienT.status_suscripcion == "Atrasado")
+          mostrarBotonBloquear(pacienT),
+        if (pacienT.status_suscripcion == "Bloqueado")
+          const Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 30.0, 0),
+            child: Text('Bloqueado', style: TextStyle(color: Colors.redAccent)),
+          ),
+        if (pacienT.status_suscripcion == "Atrasado")
+          const Padding(
+            padding: EdgeInsets.fromLTRB(30.0, 0, 30.0, 0),
+            child:
+                Text('Atrasado', style: TextStyle(color: Colors.purpleAccent)),
+          ),
+      ],
+    );
+  }
+
+  Widget mostrarBotonSuspender(PacienteModel pacienT) {
+    return Row(
+      children: [
+        SizedBox(
+          height: 50.0,
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color.fromARGB(255, 255, 140, 0),
+              ),
+              child: const Text(
+                'Suspender',
+                style: TextStyle(fontSize: 16),
+              ),
+              onPressed: () {
+                PacienteService.suspenderPaciente(pacienT.idPaciente!);
+                popUpDone(context, "Paciente suspendido Exitosamente");
+                setState(() {
+                  listOfPacientes = pacienteService.getPacientes(
+                      _dropdownSelectedFilterItem, _textFieldFilter.text);
+                });
+              }),
+        ),
+        const SizedBox(
+          width: 30.0,
+        ),
+      ],
+    );
+  }
+
+  Widget mostrarBotonBloquear(PacienteModel pacienT) {
+    return Row(
+      children: [
+        SizedBox(
+          height: 50.0,
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: const Color(0xFFFF0000),
+              ),
+              child: const Text(
+                'Bloquear',
+                style: TextStyle(fontSize: 16),
+              ),
+              onPressed: () {
+                PacienteService.bloquearPaciente(pacienT.idPaciente!);
+                popUpDone(context, "Paciente bloqueado Exitosamente");
+                setState(() {
+                  listOfPacientes = pacienteService.getPacientes(
+                      _dropdownSelectedFilterItem, _textFieldFilter.text);
+                });
+              }),
+        ),
+      ],
+    );
+  }
 }

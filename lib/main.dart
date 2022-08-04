@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myonlinedoctorweb/cita/providers/cita_estado.dart';
 import 'package:myonlinedoctorweb/cita/infraestructura/videollamada/servicio/videollamada_cita_servicio.dart';
 import 'package:myonlinedoctorweb/doctor/screens/inciar_sesi%C3%B3n_doctor.dart';
+import 'package:myonlinedoctorweb/paciente/provider/pacienteProvider.dart';
 import 'package:myonlinedoctorweb/registro_medico/provider/MedicalProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:myonlinedoctorweb/comun/screens/Bienvenido.dart';
@@ -13,6 +14,7 @@ void main() {
         providers: [
           ChangeNotifierProvider(create: (_)=> CitaEstado(request: LlamadaRequest())),
           Provider(create: (context) => MedicalRecordProvider()),
+          Provider(create: (context) => PacienteProvider())
         ],
         child: MyApp()
   ));
