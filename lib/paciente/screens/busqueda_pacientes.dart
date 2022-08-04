@@ -261,9 +261,8 @@ class _SearchPacienteScreenState extends State<SearchPacienteScreen> {
         children: [
           CampoCita(
               dato: pacienT.p_nombre! + ' ' + pacienT.p_apellido!, size: 200.0),
-          CampoCita(dato: sexoAux, size: 200.0),
-          CampoCita(dato: 'Telefono:   ${pacienT.telefono}', size: 200.0),
-          CampoCita(dato: 'Correo:   ${pacienT.correo}', size: 300.0),
+          CampoCita(dato: 'Telefono:   ${pacienT.telefono}', size: 150.0),
+          CampoCita(dato: 'Correo:   ${pacienT.correo}', size: 200.0),
           const SizedBox(
             width: 50.0,
           ),
@@ -296,132 +295,139 @@ class _SearchPacienteScreenState extends State<SearchPacienteScreen> {
   // Verifica la cantidad de especialidades del medico
 
   Widget _mostrarBotones1(PacienteModel pacienT) {
-    return Row(
-      children: [
-        SizedBox(
-          height: 50.0,
-          child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: const Color.fromARGB(255, 15, 214, 18),
-              ),
-              child: const Text(
-                'Ver Informacion',
-                style: TextStyle(fontSize: 16),
-              ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => DataPaciente(
-                              pacienT: pacienT,
-                            )));
-              }),
-        ),
-        const SizedBox(
-          width: 30.0,
-        ),
-        SizedBox(
-          height: 50.0,
-          child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Color.fromARGB(255, 0, 136, 255),
-              ),
-              child: const Text(
-                'Ver Historia Medica',
-                style: TextStyle(fontSize: 16),
-              ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => todasregistrosLista(
-                              idPaciente: pacienT.idPaciente!,
-                            )));
-              }),
-        ),
-        const SizedBox(
-          width: 30.0,
-        ),
-        if (pacienT.status_suscripcion == "Activo" ||
-            pacienT.status_suscripcion == "Atrasado")
-          mostrarBotonSuspender(pacienT),
-        if (pacienT.status_suscripcion == "Suspendido")
-          const Padding(
-            padding: EdgeInsets.fromLTRB(0, 0, 30.0, 0),
-            child: Text('Suspendido',
-                style: TextStyle(color: Colors.orangeAccent)),
+    return Expanded(
+      child: Row(
+        children: [
+          SizedBox(
+            height: 50.0,
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: const Color.fromARGB(255, 15, 214, 18),
+                ),
+                child: const Text(
+                  'Ver Informacion',
+                  style: TextStyle(fontSize: 16),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DataPaciente(
+                                pacienT: pacienT,
+                              )));
+                }),
           ),
-        if (pacienT.status_suscripcion == "Activo" ||
-            pacienT.status_suscripcion == "Suspendido" ||
-            pacienT.status_suscripcion == "Atrasado")
-          mostrarBotonBloquear(pacienT),
-        if (pacienT.status_suscripcion == "Bloqueado")
-          const Padding(
-            padding: EdgeInsets.fromLTRB(0, 0, 30.0, 0),
-            child: Text('Bloqueado', style: TextStyle(color: Colors.redAccent)),
+          const SizedBox(
+            width: 30.0,
           ),
-        if (pacienT.status_suscripcion == "Atrasado")
-          const Padding(
-            padding: EdgeInsets.fromLTRB(30.0, 0, 30.0, 0),
-            child:
-                Text('Atrasado', style: TextStyle(color: Colors.purpleAccent)),
+          SizedBox(
+            height: 50.0,
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Color.fromARGB(255, 0, 136, 255),
+                ),
+                child: const Text(
+                  'Ver Historia Medica',
+                  style: TextStyle(fontSize: 16),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => todasregistrosLista(
+                                idPaciente: pacienT.idPaciente!,
+                              )));
+                }),
           ),
-      ],
+          const SizedBox(
+            width: 30.0,
+          ),
+          if (pacienT.status_suscripcion == "Activo" ||
+              pacienT.status_suscripcion == "Atrasado")
+            mostrarBotonSuspender(pacienT),
+          if (pacienT.status_suscripcion == "Suspendido")
+            const Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 30.0, 0),
+              child: Text('Suspendido',
+                  style: TextStyle(color: Colors.orangeAccent)),
+            ),
+          if (pacienT.status_suscripcion == "Activo" ||
+              pacienT.status_suscripcion == "Suspendido" ||
+              pacienT.status_suscripcion == "Atrasado")
+            mostrarBotonBloquear(pacienT),
+          if (pacienT.status_suscripcion == "Bloqueado")
+            const Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 30.0, 0),
+              child:
+                  Text('Bloqueado', style: TextStyle(color: Colors.redAccent)),
+            ),
+          if (pacienT.status_suscripcion == "Atrasado")
+            const Padding(
+              padding: EdgeInsets.fromLTRB(30.0, 0, 30.0, 0),
+              child: Text('Atrasado',
+                  style: TextStyle(color: Colors.purpleAccent)),
+            ),
+        ],
+      ),
     );
   }
 
   Widget mostrarBotonSuspender(PacienteModel pacienT) {
-    return Row(
-      children: [
-        SizedBox(
-          height: 50.0,
-          child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Color.fromARGB(255, 255, 140, 0),
-              ),
-              child: const Text(
-                'Suspender',
-                style: TextStyle(fontSize: 16),
-              ),
-              onPressed: () {
-                PacienteService.suspenderPaciente(pacienT.idPaciente!);
-                popUpDone(context, "Paciente suspendido Exitosamente");
-                setState(() {
-                  openPacienteStream(
-                      _dropdownSelectedFilterItem, _textFieldFilter.text);
-                });
-              }),
-        ),
-        const SizedBox(
-          width: 30.0,
-        ),
-      ],
+    return Expanded(
+      child: Row(
+        children: [
+          SizedBox(
+            height: 50.0,
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Color.fromARGB(255, 255, 140, 0),
+                ),
+                child: const Text(
+                  'Suspender',
+                  style: TextStyle(fontSize: 16),
+                ),
+                onPressed: () {
+                  PacienteService.suspenderPaciente(pacienT.idPaciente!);
+                  popUpDone(context, "Paciente suspendido Exitosamente");
+                  setState(() {
+                    openPacienteStream(
+                        _dropdownSelectedFilterItem, _textFieldFilter.text);
+                  });
+                }),
+          ),
+          const SizedBox(
+            width: 30.0,
+          ),
+        ],
+      ),
     );
   }
 
   Widget mostrarBotonBloquear(PacienteModel pacienT) {
-    return Row(
-      children: [
-        SizedBox(
-          height: 50.0,
-          child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: const Color(0xFFFF0000),
-              ),
-              child: const Text(
-                'Bloquear',
-                style: TextStyle(fontSize: 16),
-              ),
-              onPressed: () {
-                PacienteService.bloquearPaciente(pacienT.idPaciente!);
-                popUpDone(context, "Paciente bloqueado Exitosamente");
-                setState(() {
-                  openPacienteStream(
-                      _dropdownSelectedFilterItem, _textFieldFilter.text);
-                });
-              }),
-        ),
-      ],
+    return Expanded(
+      child: Row(
+        children: [
+          SizedBox(
+            height: 50.0,
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: const Color(0xFFFF0000),
+                ),
+                child: const Text(
+                  'Bloquear',
+                  style: TextStyle(fontSize: 16),
+                ),
+                onPressed: () {
+                  PacienteService.bloquearPaciente(pacienT.idPaciente!);
+                  popUpDone(context, "Paciente bloqueado Exitosamente");
+                  setState(() {
+                    openPacienteStream(
+                        _dropdownSelectedFilterItem, _textFieldFilter.text);
+                  });
+                }),
+          ),
+        ],
+      ),
     );
   }
 }

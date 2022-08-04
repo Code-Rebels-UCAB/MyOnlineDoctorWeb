@@ -15,7 +15,7 @@ class CampoCita extends StatelessWidget {
           color: Colors.black,
           child: Text(
             dato ?? '-',
-            style: const TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 14),
           )),
     );
   }
