@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:myonlinedoctorweb/cita/screens/widgets/popUpDone.dart';
 import 'package:myonlinedoctorweb/comun/screens/NavBar.dart';
-import 'package:myonlinedoctorweb/comun/validations.dart';
-import 'package:myonlinedoctorweb/doctor/infraestructura/models/doctors_model.dart';
-import 'package:myonlinedoctorweb/doctor/infraestructura/services/doctor_service.dart';
-import 'package:myonlinedoctorweb/doctor/screens/busqueda_doctores_views/doctors_list.dart';
+import 'package:myonlinedoctorweb/paciente/infraestructura/modelo/pacientes_model.dart';
+import 'package:myonlinedoctorweb/paciente/infraestructura/servicios/paciente_service.dart';
 
-class SearchDoctorScreen extends StatefulWidget {
-  const SearchDoctorScreen({Key? key}) : super(key: key);
+class SearchPacienteScreen extends StatefulWidget {
+  const SearchPacienteScreen({Key? key}) : super(key: key);
   @override
-  State<SearchDoctorScreen> createState() => _SearchDoctorScreenState();
+  State<SearchPacienteScreen> createState() => _SearchPacienteScreenState();
 }
 
-class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
-  DoctorService doctorService = DoctorService();
-  dynamic listOfDoctors;
+class _SearchPacienteScreenState extends State<SearchPacienteScreen> {
+  PacienteService pacienteService = PacienteService();
+  dynamic listOfPacientes;
   // ignore: prefer_final_fields
   TextEditingController _textFieldFilter = TextEditingController();
   dynamic _dropdownSelectedFilterItem = ' ';
@@ -25,7 +22,7 @@ class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    listOfDoctors = doctorService.getDoctors(
+    listOfPacientes = pacienteService.getPacientes(
         _dropdownSelectedFilterItem, _textFieldFilter.text);
   }
 
@@ -41,7 +38,7 @@ class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
         // FutureBuilde para la carga de dostores
         body: FutureBuilder(
           // Para obtener el futuro de uns busqueda, enviamos el filtro y el valor que desea el usuario de ese filtro
-          future: listOfDoctors,
+          future: listOfPacientes,
           //futureDoctorTask(_textFieldFilter.text, _dropdownSelectedFilterItem),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             return CustomScrollView(slivers: [
@@ -84,7 +81,7 @@ class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
                           ? (snapshot.data.isNotEmpty)
 
                               // Si el estado de la conexion es lista y hay data, crea el cuerpo de la pagina
-                              ? _doctorList(context, snapshot.data)
+                              ? _pacienteList(context, snapshot.data)
 
                               // Si el estado de la conexion es lista, hay data y esta vacia
                               : const SliverFillRemaining(
@@ -141,8 +138,7 @@ class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
           items: <String>[
             ' ',
             'Nombre y Apellido',
-            'Especialidad',
-            'Top Doctores',
+            'Telefono'
             //'Geolocalización'
           ].map((String value) {
             return DropdownMenuItem<String>(
@@ -162,7 +158,7 @@ class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
                 _searchBarEnable = false;
               } else if (_dropdownSelectedFilterItem == 'Top Doctores') {
                 _searchBarEnable = false;
-                listOfDoctors = doctorService.getDoctors(
+                listOfPacientes = pacienteService.getPacientes(
                     _dropdownSelectedFilterItem, _textFieldFilter.text);
               } else {
                 _searchBarEnable = true;
@@ -214,7 +210,7 @@ class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
         // Cuando se de un cambio de estado en el TextField, reconstruye
         onChanged: (text) {
           setState(() {
-            doctorService.getDoctors(
+            listOfPacientes = pacienteService.getPacientes(
                 _dropdownSelectedFilterItem, _textFieldFilter.text);
             //futureDoctorTask(text, _dropdownSelectedFilterItem);
           });
@@ -224,113 +220,86 @@ class _SearchDoctorScreenState extends State<SearchDoctorScreen> {
   }
 
   // Lista de doctores
-  Widget _doctorList(BuildContext context, List doctorsfuture) {
+  Widget _pacienteList(BuildContext context, List doctorsfuture) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) => Card(
           child: Padding(
               padding: const EdgeInsets.all(15.0),
-              child: ListaDoctores(doctorsfuture[index])),
+              child: ListaPacientes(doctorsfuture[index])),
         ),
         childCount: doctorsfuture.length,
       ),
     );
   }
 
-  Widget ListaDoctores(DoctorModel item) {
+  Widget ListaPacientes(PacienteModel item) {
     return Container(
       // Se agrega la lista de Widgets, cada uno con la informacion de un doctor
-      child: _DoctorItem(item.idDoctor, item.name, item.gender, item.mail,
-          item.specialties, item.photo, item.rating, item.status),
+      child: _PacienteItem(
+          item.idPaciente,
+          item.p_nombre,
+          item.s_nombre,
+          item.p_apellido,
+          item.s_apellido,
+          item.sexo,
+          item.altura,
+          item.peso,
+          item.telefono,
+          item.antecedentes,
+          item.operacion,
+          item.status_suscripcion,
+          item.alergia,
+          item.correo,
+          item.fecha_nacimiento),
     );
   }
 
-  Widget _DoctorItem(String idDoctor, String name, String gender, String mail,
-      dynamic specialties, String photo, dynamic rating, String status) {
+  Widget _PacienteItem(
+      String idPaciente,
+      String p_nombre,
+      String s_nombre,
+      String p_apellido,
+      String s_apellido,
+      String sexo,
+      String altura,
+      String peso,
+      String telefono,
+      String antecedentes,
+      String operacion,
+      String status_suscripcion,
+      String alergia,
+      String correo,
+      String fecha_nacimiento) {
+    String sexoAux = sexo == 'M' ? "Sexo: Masculino" : "Sexo: Femenino";
     return ListTile(
-      leading: CircleAvatar(
-        backgroundImage: verifyPhoto(photo),
-        radius: 30,
-      ),
-      title: Text('${verifyGender(gender)} ${name}'),
-      subtitle: Row(
-        children: [
-          Stack(
-            children: [
-              Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    verifySpecialty(specialties),
-                  )),
-              Padding(
-                padding: const EdgeInsets.only(top: 22.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      '${rating}',
-                      style: const TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                    const Icon(
-                      Icons.star,
-                      color: Colors.yellow,
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
-      trailing: status == 'Activo'
-          ? _mostrarBoton(context, idDoctor, doctorService)
-          : const Text('Bloqueado', style: TextStyle(color: Colors.redAccent)),
-    );
+        title: Text(p_nombre + ' ' + p_apellido),
+        subtitle: Text(
+            sexoAux + ' ' + 'Correo: $correo' + ' ' + 'Telefono: $telefono'));
   }
 
   // Verifica la cantidad de especialidades del medico
-  String verifySpecialty(dynamic specialtyList) {
-    String specialities = '';
 
-    if (specialtyList.isNotEmpty) {
-      if (specialtyList.length > 1) {
-        for (var item in specialtyList) {
-          if (item == specialtyList[0]) {
-            specialities = specialtyList[0];
-          } else {
-            specialities = '$specialities, $item';
-          }
-        }
-        return specialities;
-      }
-      return specialtyList[0];
-    } else {
-      return 'Medico Cirujano';
-    }
-  }
-
-  Widget _mostrarBoton(
-      BuildContext context, String idDoctor, DoctorService doctorService) {
-    return SizedBox(
-      height: 50.0,
-      child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: Color.fromARGB(255, 255, 0, 0),
-          ),
-          child: const Text(
-            'Bloquear',
-            style: TextStyle(fontSize: 22),
-          ),
-          onPressed: () {
-            DoctorService.bloquearDoctor(idDoctor);
-            popUpDone(context, "Doctor Bloqueado Exitosamente");
-            setState(() {
-              listOfDoctors = doctorService.getDoctors(
-                  _dropdownSelectedFilterItem, _textFieldFilter.text);
-            });
-          }),
-    );
-  }
+  // Widget _mostrarBoton(
+  //     BuildContext context, String idDoctor, PacienteService doctorService) {
+  //   return SizedBox(
+  //     height: 50.0,
+  //     child: ElevatedButton(
+  //         style: ElevatedButton.styleFrom(
+  //           primary: Color.fromARGB(255, 255, 0, 0),
+  //         ),
+  //         child: const Text(
+  //           'Bloquear',
+  //           style: TextStyle(fontSize: 22),
+  //         ),
+  //         onPressed: () {
+  //           PacienteService.bloquearDoctor(idDoctor);
+  //           popUpDone(context, "Doctor Bloqueado Exitosamente");
+  //           setState(() {
+  //             listOfPacientes = pacienteService.getPacientes(
+  //                 _dropdownSelectedFilterItem, _textFieldFilter.text);
+  //           });
+  //         }),
+  //   );
+  // }
 }
