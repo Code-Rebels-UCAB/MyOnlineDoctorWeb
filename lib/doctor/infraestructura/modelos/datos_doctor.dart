@@ -1,5 +1,4 @@
 
-
 import 'dart:core';
 
 import 'especialidad.dart';
@@ -9,7 +8,7 @@ class DatosDoctorModelo {
   final String sexo;
   final String foto;
   final int calificacion;
-  final Especialidad especialidades;
+  final List<Especialidad> especialidades;
 
 
   const DatosDoctorModelo({
@@ -22,11 +21,11 @@ class DatosDoctorModelo {
 
   factory DatosDoctorModelo.fromJson(Map<String, dynamic> json){
     return DatosDoctorModelo(
-      nombre: json['nombre'],
-      sexo: json['sexo'],
-      foto: json['foto'],
-      calificacion: json['calificacion'],
-        especialidades: json['especialidades']
+        nombre: json['nombre'],
+        sexo: json['sexo'],
+        foto: json['foto'],
+        calificacion: int.parse( json['calificacion']),
+        especialidades: json['especialidades'].map<Especialidad>((e)=> Especialidad(nombre: e)).toList()
     );
   }
 

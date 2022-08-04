@@ -44,10 +44,10 @@ class DoctorServicio implements DoctorServicioAbstract{
       final token = await authToken.leerToken();
       final apiUrl = Uri.parse(url + "/api/doctor/perfil");
       var response = await http.get(apiUrl,
-          headers:{
-            "Content-type": "application/json",
-            'Authorization': 'Bearer $token',
-          },
+        headers:{
+          "Content-type": "application/json",
+          'Authorization': 'Bearer $token',
+        },
       ).timeout(const Duration(seconds: 15));
       final respuestaExtraida = json.decode(response.body)['valor'];
       final datosDoctor = DatosDoctorModelo.fromJson(respuestaExtraida);
