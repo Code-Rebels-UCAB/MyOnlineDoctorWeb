@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myonlinedoctorweb/cita/screens/widgets/campo_citas.dart';
 import 'package:myonlinedoctorweb/cita/screens/widgets/popUpDone.dart';
 import 'package:myonlinedoctorweb/comun/screens/NavBar.dart';
+import 'package:myonlinedoctorweb/paciente/infraestructura/modelo/pacienteStream.dart';
 import 'package:myonlinedoctorweb/paciente/infraestructura/modelo/pacientes_model.dart';
 import 'package:myonlinedoctorweb/paciente/infraestructura/servicios/paciente_service.dart';
 import 'package:myonlinedoctorweb/paciente/provider/pacienteProvider.dart';
@@ -28,8 +29,12 @@ class _SearchPacienteScreenState extends State<SearchPacienteScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    listOfPacientes = pacienteService.getPacientes(
-        _dropdownSelectedFilterItem, _textFieldFilter.text);
+    openPacienteStream(_dropdownSelectedFilterItem, _textFieldFilter.text);
+  }
+
+  void openPacienteStream(String dropdown, String texto) {
+    setState(() =>
+        listOfPacientes = PacienteStream.streamTodosPacientes(dropdown, texto));
   }
 
   @override
@@ -42,9 +47,9 @@ class _SearchPacienteScreenState extends State<SearchPacienteScreen> {
           backgroundColor: const Color(0xFF00B0E8),
         ),
         // FutureBuilde para la carga de dostores
-        body: FutureBuilder(
+        body: StreamBuilder(
           // Para obtener el futuro de uns busqueda, enviamos el filtro y el valor que desea el usuario de ese filtro
-          future: listOfPacientes,
+          stream: listOfPacientes,
           //futureDoctorTask(_textFieldFilter.text, _dropdownSelectedFilterItem),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             return CustomScrollView(slivers: [
@@ -212,7 +217,7 @@ class _SearchPacienteScreenState extends State<SearchPacienteScreen> {
         // Cuando se de un cambio de estado en el TextField, reconstruye
         onChanged: (text) {
           setState(() {
-            listOfPacientes = pacienteService.getPacientes(
+            openPacienteStream(
                 _dropdownSelectedFilterItem, _textFieldFilter.text);
           });
         },
@@ -374,7 +379,7 @@ class _SearchPacienteScreenState extends State<SearchPacienteScreen> {
                 PacienteService.suspenderPaciente(pacienT.idPaciente!);
                 popUpDone(context, "Paciente suspendido Exitosamente");
                 setState(() {
-                  listOfPacientes = pacienteService.getPacientes(
+                  openPacienteStream(
                       _dropdownSelectedFilterItem, _textFieldFilter.text);
                 });
               }),
@@ -403,7 +408,7 @@ class _SearchPacienteScreenState extends State<SearchPacienteScreen> {
                 PacienteService.bloquearPaciente(pacienT.idPaciente!);
                 popUpDone(context, "Paciente bloqueado Exitosamente");
                 setState(() {
-                  listOfPacientes = pacienteService.getPacientes(
+                  openPacienteStream(
                       _dropdownSelectedFilterItem, _textFieldFilter.text);
                 });
               }),

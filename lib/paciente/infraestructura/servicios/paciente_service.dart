@@ -7,7 +7,7 @@ import 'package:myonlinedoctorweb/paciente/infraestructura/modelo/pacientes_mode
 class PacienteService {
   static String urlLocal = SERVER_API;
 
-  Future<List<dynamic>> getPacientes(
+  static Future<List<dynamic>> getPacientes(
       String dropdownFilter, String searchValue) async {
     // ignore: prefer_typing_uninitialized_variables
     var response;
