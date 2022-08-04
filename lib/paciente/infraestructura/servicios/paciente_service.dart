@@ -4,6 +4,8 @@ import 'dart:convert';
 
 import 'package:myonlinedoctorweb/paciente/infraestructura/modelo/pacientes_model.dart';
 
+import '../../../comun/environment.dart';
+
 class PacienteService {
   static String urlLocal = SERVER_API;
 

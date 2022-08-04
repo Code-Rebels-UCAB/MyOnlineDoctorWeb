@@ -2,10 +2,14 @@ import 'package:http/http.dart' as http;
 import 'package:myonlinedoctorweb/comun/enviroment.dart';
 import 'dart:convert';
 
-import 'package:myonlinedoctorweb/doctor/infraestructura/models/doctors_model.dart';
+import '../../../comun/environment.dart';
+import '../models/doctors_model.dart';
+
 
 class DoctorService {
+
   static String urlLocal = SERVER_API;
+
   Future<List<dynamic>> getDoctors(
       String dropdownFilter, String searchValue) async {
     // ignore: prefer_typing_uninitialized_variables
