@@ -10,7 +10,7 @@ class ServiceRegistroMedico {
   static Future<List<RegistroMedico>?> getTodosRegistrosPcte(
       String idPaciente) async {
     final url = Uri.parse(
-        urlLocal + '/api/registroMedico/getByPaciente?idPaciente=$idPaciente');
+        urlLocal + '/api/registroMedico/getByPacienteWeb?id=$idPaciente');
     final http.Response response;
     try {
       response = await http.get(url);
@@ -20,24 +20,25 @@ class ServiceRegistroMedico {
       return null;
     }
     final List jsonData;
-    List<RegistroMedico>? citas;
+    List<RegistroMedico>? registros;
     ServicioRegistroMed respCi;
 
     if (response.statusCode == 200) {
       String body = utf8.decode(response.bodyBytes);
       if (body.isNotEmpty) {
         respCi = servicioRegistroMedFromJson(body);
-        citas = respCi.valor;
-        return citas;
+        registros = respCi.valor;
+        return registros;
       } else {
-        return citas = [];
+        return registros = [];
       }
     } else {
-      return citas;
+      return registros;
     }
   }
 
-  static Future<List<RegistroMedico>?> crearRegistroMed(RegistroMedico nuevoRegistro) async {
+  static Future<List<RegistroMedico>?> crearRegistroMed(
+      RegistroMedico nuevoRegistro) async {
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
         'POST', Uri.parse('http://localhost:3000/api/registroMedico/crear'));

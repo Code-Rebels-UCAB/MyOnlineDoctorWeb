@@ -6,6 +6,7 @@ import 'package:myonlinedoctorweb/paciente/infraestructura/modelo/pacienteStream
 import 'package:myonlinedoctorweb/paciente/infraestructura/modelo/pacientes_model.dart';
 import 'package:myonlinedoctorweb/paciente/infraestructura/servicios/paciente_service.dart';
 import 'package:myonlinedoctorweb/paciente/provider/pacienteProvider.dart';
+import 'package:myonlinedoctorweb/paciente/screens/registrosDePaciente.dart';
 import 'package:myonlinedoctorweb/paciente/screens/verDataPaciente.dart';
 import 'package:myonlinedoctorweb/paciente/screens/widgets/campo_pacientes.dart';
 import 'package:provider/provider.dart';
@@ -329,7 +330,14 @@ class _SearchPacienteScreenState extends State<SearchPacienteScreen> {
                 'Ver Historia Medica',
                 style: TextStyle(fontSize: 16),
               ),
-              onPressed: () {}),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => todasregistrosLista(
+                              idPaciente: pacienT.idPaciente!,
+                            )));
+              }),
         ),
         const SizedBox(
           width: 30.0,
