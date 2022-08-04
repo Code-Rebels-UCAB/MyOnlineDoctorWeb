@@ -96,11 +96,17 @@ class _citasSolicitadasListaState extends State<citasSolicitadasLista> {
                           child: CampoCita(
                               dato: cita.paciente.pNombre +
                                   ' ' +
-                                  cita.paciente.pApellido),
+                                  cita.paciente.pApellido,
+                              size: 300.0),
                         ),
-                        Expanded(child: CampoCita(dato: cita.motivo)),
-                        Expanded(child: CampoCita(dato: cita.modalidad)),
-                        Expanded(child: CampoCita(dato: cita.statuscita)),
+                        Expanded(
+                            child: CampoCita(dato: cita.motivo, size: 300.0)),
+                        Expanded(
+                            child:
+                                CampoCita(dato: cita.modalidad, size: 300.0)),
+                        Expanded(
+                            child:
+                                CampoCita(dato: cita.statuscita, size: 300.0)),
                         _mostrarBotones(cita, cita.idCita)
                       ],
                     ),

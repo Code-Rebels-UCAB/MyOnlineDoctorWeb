@@ -96,12 +96,20 @@ class _todasCitasListaState extends State<todasCitasLista> {
                           child: CampoCita(
                               dato: cita.paciente.pNombre +
                                   ' ' +
-                                  cita.paciente.pApellido),
+                                  cita.paciente.pApellido,
+                              size: 300.0),
                         ),
-                        Expanded(child: CampoCita(dato: cita.fechacita)),
-                        Expanded(child: CampoCita(dato: cita.horacita)),
-                        Expanded(child: CampoCita(dato: cita.modalidad)),
-                        Expanded(child: CampoCita(dato: cita.statuscita)),
+                        Expanded(
+                            child:
+                                CampoCita(dato: cita.fechacita, size: 300.0)),
+                        Expanded(
+                            child: CampoCita(dato: cita.horacita, size: 300.0)),
+                        Expanded(
+                            child:
+                                CampoCita(dato: cita.modalidad, size: 300.0)),
+                        Expanded(
+                            child:
+                                CampoCita(dato: cita.statuscita, size: 300.0)),
                         if (cita.statuscita == "Aceptada")
                           _mostrarBotones(cita.idCita)
                       ],
@@ -134,6 +142,4 @@ class _todasCitasListaState extends State<todasCitasLista> {
       ],
     );
   }
-
-  
 }

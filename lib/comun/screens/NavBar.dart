@@ -3,12 +3,14 @@ import 'package:myonlinedoctorweb/cita/screens/citas_dashboard.dart';
 import 'package:myonlinedoctorweb/cita/screens/lista_citas_solicitadas.dart';
 import 'package:myonlinedoctorweb/comun/screens/Bienvenido.dart';
 import 'package:myonlinedoctorweb/doctor/providers/datos_doctor_estado.dart';
+import 'package:myonlinedoctorweb/doctor/screens/busqueda_doctores_views/busqueda_doctores.dart';
 import 'package:myonlinedoctorweb/doctor/screens/inciar_sesi%C3%B3n_doctor.dart';
 import 'package:myonlinedoctorweb/doctor/screens/llenar_registro_medico.dart';
 import 'package:provider/provider.dart';
 
 import '../infraestructura/autenticacion/auth_service.dart';
 import '../infraestructura/autenticacion/storage/guardado_token_jwt.dart';
+import 'package:myonlinedoctorweb/paciente/screens/busqueda_pacientes.dart';
 
 class NavBar extends StatelessWidget {
   const NavBar({Key? key}) : super(key: key);
@@ -69,7 +71,7 @@ class NavBar extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => RegistroMedicoView()));
+                            builder: (context) => const SearchPacienteScreen()));
                   },
                 ),
                 ListTile(
@@ -88,7 +90,12 @@ class NavBar extends StatelessWidget {
                   const Icon(Icons.health_and_safety, color: Color(0xFF94C6F2)),
                   title: const Text('Doctores',
                       style: TextStyle(color: Color(0xFF94C6F2))),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SearchDoctorScreen()));
+                  },
                 ),
                 ListTile(
                   leading:
